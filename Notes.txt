@@ -1,0 +1,52 @@
+Tables:
+
+- Expenses:
+	. id - INT
+	. description - VARCHAR
+	. cost - FLOAT 
+	. date - DATE
+	. expense_type - FK [Types_of_expenses]
+	. payment_method - FK [Payment_methods]
+	. installments - Bool
+
+- Types_of_expenses:
+	. id - INT
+	. type_name - VARCHAR
+
+- Payment_methods:
+	. id - INT
+	. method_name - VARCHAR
+
+- Installments: -> Represents the expenses that are divided throught months
+	. id - INT
+	. expense_id - FK [Expenses]
+	. cost - FLOAT 
+	. installment_number - INT
+	. due_date -> Date that will be debited from account
+
+- Recurring_expenses -> Expenses that will always exist, like rent and eletric bills
+	. id - INT
+	. description - VARCHAR
+	. cost - float
+	. type_id - INT
+	. frequency - For now will be only monthly
+	. start_date - DATE
+
+Usage of data:
+	
+- Build monthly costs:
+	- Get all expenses that have a due date to this month
+		- Need to read from:
+			1. Expenses table and installments table
+				Where date_month = this_month and installments = false
+			2. Recurring expenses
+				Where start_date < today
+
+- Build general list: 
+	- Get all expenses with join in installments to better check costs
+	- Get All recuring expenses with start date < today
+
+- Build recurring expenses
+
+- Build next month prediction:
+	- Use recurring_expenses and installments
