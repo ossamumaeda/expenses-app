@@ -1,8 +1,14 @@
-<!-- component -->
+<header class="bg-gray-900   text-white px-4 py-3 flex justify-between items-center">
+    <button id="menu-toggle" class="text-2xl">
+        ☰
+    </button>
+    <h1 class="text-lg">My Website</h1>
+</header>
+<div>
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
 
-<div x-data="setup()" :class="{ 'dark': isDark }">
-    <div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white dark:bg-gray-700 text-black dark:text-white">
-        <div class="fixed flex flex-col left-0 w-14 hover:w-52 lg:w-52 bg-blue-900 dark:bg-gray-900 h-full text-white transition-all duration-300 border-none z-10 sidebar">
+    <aside id="sidebar" class="fixed left-0 top-0 h-full shadow-lg z-50 min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white dark:bg-gray-700 text-black dark:text-white sidebar">
+        <div class=" flex flex-col left-0 w-14 hover:w-52 lg:w-52 bg-blue-900 dark:bg-gray-900 h-full text-white transition-all duration-300 border-none z-10">
             <div class="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow">
                 <ul class="flex flex-col py-4 space-y-1">
                     <li class="px-5 hidden lg:block">
@@ -59,7 +65,5 @@
                 </ul>
             </div>
         </div>
-
-    </div>
+    </aside>
 </div>
-

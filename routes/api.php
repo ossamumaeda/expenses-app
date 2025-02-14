@@ -21,3 +21,5 @@ Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.st
 
 Route::post('/recurrent-expenses', [RecurrentExpenseController::class, 'store'])->name('recurrent-expenses.store');
 Route::post('/recurrent-expenses-update', [RecurrentExpenseController::class, 'update'])->name('recurrent-expenses.update');
+
+Route::post('/upload-csv', [RecurrentExpenseController::class, 'uploadCsv'])->name('recurrent-expenses.csv');

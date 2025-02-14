@@ -1,0 +1,14 @@
+
+> dev
+> vite
+
+
+  VITE v6.0.11  ready in 142 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+
+  LARAVEL v11.41.3  plugin v1.2.0
+
+  ➜  APP_URL: http://localhost:80
+5:24:10 PM [vite] full reload resources/views/recurringExpenses.blade.php

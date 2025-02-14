@@ -22,12 +22,9 @@
 </head>
 
 <body class="font-sans antialiased ">
-
+    <x-sidebar /> 
     <div class="flex flex-row">
-        <x-sidebar />
-
-        <!-- Main Content -->
-        <div class="flex-1 lg:ml-52 ml-14">
+        <div class="flex-1">
             {{ $slot }}
         </div>
     </div>

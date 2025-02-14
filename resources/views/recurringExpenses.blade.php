@@ -1,5 +1,6 @@
 <x-layout.app>
-    <div id="layout" class="sm:p-10 p-4 space-y-10 ">
+
+    <div id="layout" class="sm:p-10 p-2 space-y-10 ">
         <div class="w-fulll flex flex-col rounded-lg shadow-lg sm:p-4 p-2 gap-y-5" id="parent">
             <div class="w-full flex flex-row justify-between  p-1">
                 <div class="w-auto">
@@ -26,7 +27,7 @@
             </div>
 
             <div class="flex lg:flex-row flex-col">
-                <div class="lg:w-2/5 w-full h-auto self-center ">
+                <div class="lg:w-2/5 w-3/4 h-auto self-center ">
                     <div id="expenseChart" data-labels='@json($chartLabels)'
                         data-data='@json($chartData)' data-color='@json($chartColor)'></div>
                 </div>
@@ -92,7 +93,8 @@
                             picker</label>
                         <input type="color"
                             class="p-1 h-10 w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700"
-                            name="color" id="color" value="#2563eb" title="Choose your color" style="height: 57.2px;">
+                            name="color" id="color" value="#2563eb" title="Choose your color"
+                            style="height: 57.2px;">
                     </div>
                 </div>
                 <div>
@@ -101,20 +103,25 @@
                         type="submit">
                         Create
                     </button>
+                    <button
+                        class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
+                        data-bs-toggle="modal" data-bs-target="#expenseModal" type="button" id="csv">
+                        Import csv
+                    </button>
                 </div>
             </form>
 
         </div>
 
-        <div class="w-full">
+        <div class="w-full" id="table-recurrent-expenses">
             <div class="w-full rounded-lg shadow overflow-hidden">
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                         <tr>
-                            <th class="w-70 p-3 text-sm font-semibold tracking-wide text-left">Name</th>
-                            <th class="w-70 p-3 text-sm font-semibold tracking-wide text-left">Description</th>
-                            <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Cost</th>
-                            <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Action</th>
+                            <th class="w-70 p-3 text-xs font-semibold tracking-wide text-left">Name</th>
+                            <th class="w-70 p-3 text-xs font-semibold tracking-wide text-left">Description</th>
+                            <th class="w-20 p-3 text-xs font-semibold tracking-wide text-left">Cost</th>
+                            <th class="w-20 p-3 text-xs font-semibold tracking-wide text-left">Action</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -122,24 +129,29 @@
                             <tr class="odd:bg-white" data-id="{{ $expense->id }}">
                                 <!-- Editable Name Field -->
                                 <td class="p-3 text-base text-gray-900">
-                                    <span class="view-mode">{{ $expense->name }}</span>
-                                    <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm" value="{{ $expense->name }}">
+                                    <span class="view-mode text-xs">{{ $expense->name }}</span>
+                                    <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm"
+                                        value="{{ $expense->name }}">
                                 </td>
                                 <td class="p-3 text-sm text-gray-700">
-                                    <span class="view-mode">{{ $expense->description }}</span>
-                                    <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm" value="{{ $expense->description }}">
+                                    <span class="view-mode text-xs">{{ $expense->description }}</span>
+                                    <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm"
+                                        value="{{ $expense->description }}">
                                 </td>
                                 <!-- Editable Cost Field -->
                                 <td class="p-3 text-sm text-gray-700">
-                                    <span class="view-mode">{{ $expense->cost }}</span>
-                                    <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm" value="{{ $expense->cost }}">
+                                    <span class="view-mode text-xs">{{ $expense->cost }}</span>
+                                    <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm"
+                                        value="{{ $expense->cost }}">
                                 </td>
-                
+
                                 <!-- Edit / Save Button -->
                                 <td class="flex items-center px-3 py-4 gap-2 ">
                                     <button class="edit-btn font-medium text-blue-600 hover:underline">Edit</button>
-                                    <button class="save-btn font-medium text-green-600 hover:underline hidden">Save</button>
-                                    <button class="cancel-btn font-medium text-red-500 hover:underline hidden">Cancel</button>
+                                    <button
+                                        class="save-btn font-medium text-green-600 hover:underline hidden">Save</button>
+                                    <button
+                                        class="cancel-btn font-medium text-red-500 hover:underline hidden">Cancel</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -149,5 +161,28 @@
         </div>
 
 
+    </div>
+
+    <div class="modal mt-0 p-0" id="expenseModal" tabindex="-1" aria-labelledby="expenseModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-xl sm:text-2xl font-medium text-gray-800" id="expenseModalLabel">
+                        Import recurrent expenses</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="csv-upload-form" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="csv_file" id="csv_file" accept=".csv" />
+                        <button type="submit">Upload CSV</button>
+                    </form>
+
+                    <div class="w-full rounded-lg shadow overflow-hidden" id="response"></div>
+
+                </div>
+            </div>
+        </div>
     </div>
 </x-layout.app>
