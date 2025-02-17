@@ -29,9 +29,8 @@ class RecurrentExpenseController extends Controller
                 'name' => 'required|string|max:255',
                 'cost' => 'required|numeric',
                 'color' => 'string',
-                'frequency' => 'string',
-                'description' => 'string',
-
+                'frequency' => 'nullable|string',
+                'description' => 'nullable|string|max:255',
             ]);
             $this->recurrentExpenseService->createRecurrentExpense($validated);
             if ($request->expectsJson() === false) {

@@ -46,9 +46,10 @@ class ExpenseController extends Controller
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
+                'description' => 'nullable|string|max:255',
                 'cost' => 'required|numeric',
-                'installments' => 'bool',
-                'due_date' => 'date|date_format:Y-m-d H:i:s',
+                'installments' => 'nullable|bool',
+                'due_date' => 'nullable|date|date_format:Y-m-d H:i:s',
                 'expense_type_id' => 'required|exists:expense_types,id',
                 'payment_method_id' => 'exists:payment_methods,id',
             ]);
@@ -118,26 +119,6 @@ class ExpenseController extends Controller
 
         fclose($handle);
         return response()->json($response);
-    }
-
-    public function createMany2(Request $request)
-    {
-        $request->validate([
-            'expenses' => 'required|array',
-            'expenses.*.name' => 'required|string|max:255',
-            'expenses.*.cost' => 'required|numeric|min:0',
-            'expenses.*.description' => 'string|max:255',
-        ]);
-
-        foreach ($request->expenses as $expenseData) {
-            // Ensure the amount is a float
-            $expenseData['cost'] = (float) $expenseData['cost'];
-            Expense::create([
-                'name' => $expenseData['name'],
-                'description' => $expenseData['description'],
-                'cost' => $expenseData['cost'],
-            ]);
-        }
     }
 
     public function createMany(Request $request)
