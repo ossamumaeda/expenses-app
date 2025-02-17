@@ -9,7 +9,7 @@ use App\Models\ExpenseType;
 class ExpenseTypeService {
     
     public function getAll(){
-        $expenseTypes = ExpenseType::all('id','name');
+        $expenseTypes = ExpenseType::all('id','name','color');
         return $expenseTypes;
     }
 

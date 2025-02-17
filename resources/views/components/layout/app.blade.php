@@ -20,11 +20,12 @@
     @vite(['resources/js/app.js'])
 
 </head>
+<x-sidebar /> 
 
 <body class="font-sans antialiased ">
-    <x-sidebar /> 
+    {{--  lg:ml-52 ml-14 --}}
     <div class="flex flex-row">
-        <div class="flex-1">
+        <div class="flex-1 ">
             {{ $slot }}
         </div>
     </div>

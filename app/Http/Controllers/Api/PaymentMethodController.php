@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller;
 class PaymentMethodController extends Controller
 {
     public function index()

@@ -81,41 +81,5 @@ class RecurrentExpenseController extends Controller
             ], 422);
         }
     }
-
-    public function uploadCsv(Request $request)
-    {
-        // Validate the uploaded file
-        $request->validate([
-            'csv_file' => 'required|mimes:csv,txt|max:2048', // Adjust max size as needed
-        ]);
-    
-        // Get the uploaded file
-        $file = $request->file('csv_file');
-    
-        // Open the file for reading
-        $handle = fopen($file->getRealPath(), 'r');
-    
-        $row = 1;
-        $response = [];
-    
-        // Read each line of the CSV
-        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-            // Only read column A (index 0) and B (index 1)
-            $columnA = isset($data[0]) ? $data[0] : '';
-            $columnB = isset($data[1]) ? $data[1] : 0;
-            $columnC = isset($data[2]) ? $data[2] : '';
-    
-            // Build response with column values
-            $response[] = [
-                'name' => $columnA,
-                'cost' => $columnB,
-                'description' => $columnC
-            ]; 
-            $row++;
-        }
-    
-        fclose($handle);
-        return response()->json($response);
-    }
     
 }

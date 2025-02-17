@@ -12,7 +12,7 @@ $(document).ready(function() {
         row.find(".cancel-btn").removeClass("hidden");
     });
   
-    $(".save-btn").click(function() {
+    $("#save-recurrent").click(function() {
         var row = $(this).closest("tr");
         var expenseId = row.data("id");
   
@@ -60,7 +60,14 @@ $(document).ready(function() {
         row.find(".cancel-btn").addClass("hidden");
     });
 
+    $('#csv_file').on('change', function () {
+        if ($(this).val()) {
+            $('#csv-upload-form').submit(); // Auto-submit the form
+        }
+    });
+    
     $('#csv-upload-form').submit(function (event) {
+        console.log("Changes");
         event.preventDefault(); // Prevent form submission
 
         var formData = new FormData(this); // Create FormData object with the form data
@@ -73,7 +80,7 @@ $(document).ready(function() {
             contentType: false, // Prevent jQuery from setting contentType
             success: function (response) {
                 let table = `
-                <table class="w-full">
+                <table class="w-full" id="table-expenses">
                 <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr>
                         <th class="w-70 p-3 text-sm font-semibold tracking-wide text-left">Name</th>
@@ -118,6 +125,35 @@ $(document).ready(function() {
     $("#close-menu, #overlay").click(function() {
         $("#sidebar").removeClass("active");
         $("#overlay").addClass("hidden");
+    });
+
+    $("#upload_csv").click(function(){
+        let tableData = [];
+
+        $('#table-expenses tbody tr').each(function () {
+            let row = $(this).find('td'); // Get all <td> in the row
+            let rowData = {
+                name: row.eq(0).find('span').text().trim(),
+                description: row.eq(1).find('span').text().trim(),
+                cost: row.eq(2).find('span').text().trim(),
+            };
+            tableData.push(rowData);
+        });
+        
+        $.ajax({
+            url: '/api/expenses-create', // Change to your API route
+            type: 'POST',
+            data: JSON.stringify({ expenses: tableData }),
+            contentType: 'application/json',
+            success: function (response) {
+                alert('Data sent successfully!');
+                console.log(response);
+            },
+            error: function (xhr) {
+                alert('Failed to send data.');
+                console.error(xhr);
+            }
+        });
     });
   });
 

@@ -9,7 +9,7 @@ use App\Models\PaymentMethod;
 class PaymentMethodService {
     
     public function getAll(){
-        $paymentMethod = PaymentMethod::all('id','name');
+        $paymentMethod = PaymentMethod::all('id','name','color');
         return $paymentMethod;
     }
 

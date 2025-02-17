@@ -46,4 +46,10 @@ class DashboardController extends Controller
 
         return view('dashboard', compact('chartLabels', 'chartData', 'chartColor', 'allExpenses', 'expensesByType','expenseTypes','expensesTotalCost','paymentMethods'));
     }
+
+    public function createMany(){
+        
+    }
+
+
 }

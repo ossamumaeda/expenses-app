@@ -43,6 +43,14 @@ class ExpenseService {
         return $expenses;
     }
 
+    public function update($data)
+    {
+        $expense = Expense::find($data['id']);
+        $expense->update($data);
+
+        return $expense;
+    }
+
     public function getAll(){
         $expenses = Expense::with(['expenseType','paymentMethod'])->get();
         return $expenses;

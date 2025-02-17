@@ -87,6 +87,12 @@
             </div>
         </div>
 
+        <button
+            class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
+            data-bs-toggle="modal" data-bs-target="#expenseModal" type="button" id="csv">
+            Import csv
+        </button>
+
         <div class="w-full">
             <div class="w-full rounded-lg shadow overflow-hidden hidden md:block ">
                 <table class="w-full">
@@ -105,63 +111,86 @@
                         @foreach ($allExpenses as $expense)
                             <tr class="odd:bg-white even:bg-slate-200" data-id="{{ $expense->id }}">
                                 <td class="p-3 text-sm text-gray-700">{{ $expense->due_date }}</td>
-                
+
                                 <!-- Editable Name Field -->
                                 <td class="p-3 text-sm text-gray-700">
-                                    <span class="view-mode">{{ $expense->name }}</span>
-                                    <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm" value="{{ $expense->name }}">
+                                    <span class="view-mode"
+                                        id="view-name-{{ $expense->id }}">{{ $expense->name }}</span>
+                                    <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm"
+                                        value="{{ $expense->name }}" id="name-{{ $expense->id }}">
                                 </td>
-                
+
                                 <!-- Editable Category Field -->
                                 <td class="p-3 text-sm text-gray-700">
                                     <span class="view-mode">
-                                        <span class="p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50"
-                                              style="background-color: {{ $expense->expenseType->color }}">
+                                        <span
+                                            class="p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50"
+                                            style="background-color: {{ $expense->expenseType->color }}"
+                                            id="view-type-{{ $expense->id }}">
                                             {{ $expense->expenseType->name }}
                                         </span>
                                     </span>
-                                    <select class="edit-mode hidden border px-2 py-1 text-sm">
+                                    <select
+                                        class="edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
+                                        style="background-color: {{ $expense->expenseType->color }};"
+                                        id="expenseType-{{ $expense->id }}" onchange="updateSelectColor(this)">
                                         @foreach ($expenseTypes as $type)
-                                            <option value="{{ $type->id }}" {{ $expense->expenseType->id == $type->id ? 'selected' : '' }}>
+                                            <option value="{{ $type->id }}" class="text-gray-700"
+                                                style="background-color: {{ $type->color }};font-weight: bold;"
+                                                {{ $expense->expenseType->id == $type->id ? 'selected' : '' }}>
                                                 {{ $type->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </td>
-                
+
                                 <!-- Editable Payment Field -->
                                 <td class="p-3 text-sm text-gray-700">
                                     <span class="view-mode">
-                                        <span class="p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50"
-                                              style="background-color: {{ $expense->paymentMethod->color }}">
+                                        <span
+                                            class="p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50"
+                                            style="background-color: {{ $expense->paymentMethod->color }}"
+                                            id="view-payment-{{ $expense->id }}">
                                             {{ $expense->paymentMethod->name }}
                                         </span>
                                     </span>
-                                    <select class="edit-mode hidden border px-2 py-1 text-sm">
+                                    <select 
+                                        class="edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
+                                        style="background-color: {{ $expense->paymentMethod->color }};"
+                                        id="paymentMethod-{{ $expense->id }}"  onchange="updateSelectColor(this)">
                                         @foreach ($paymentMethods as $method)
-                                            <option value="{{ $method->id }}" {{ $expense->paymentMethod->id == $method->id ? 'selected' : '' }}>
+                                            <option value="{{ $method->id }}" class="text-gray-700"
+                                                style="background-color: {{ $method->color }};font-weight: bold;"
+                                                {{ $expense->paymentMethod->id == $method->id ? 'selected' : '' }}>
                                                 {{ $method->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </td>
-                
+
                                 <!-- Editable Installments Field -->
                                 <td class="p-3 text-sm text-gray-700">
-                                    <span class="view-mode">{{ $expense->installments }}</span>
-                                    <input type="number" class="edit-mode hidden w-full border px-2 py-1 text-sm" value="{{ $expense->installments }}">
+                                    <span class="view-mode"
+                                        id="view-installment-{{ $expense->id }}">{{ $expense->installments }}</span>
+                                    <input type="number" class="edit-mode hidden w-full border px-2 py-1 text-sm"
+                                        value="{{ $expense->installments }}" id="stallment-{{ $expense->id }}">
                                 </td>
-                
+
                                 <!-- Editable Cost Field -->
                                 <td class="p-3 text-sm text-gray-700">
-                                    <span class="view-mode">{{ $expense->cost }}</span>
-                                    <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm" value="{{ $expense->cost }}">
+                                    <span class="view-mode"
+                                        id="view-cost-{{ $expense->id }}">{{ $expense->cost }}</span>
+                                    <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm"
+                                        value="{{ $expense->cost }}" id="cost-{{ $expense->id }}">
                                 </td>
-                
+
                                 <!-- Edit / Save Button -->
-                                <td class="flex items-center px-3 py-4">
+                                <td class="flex items-center px-3 py-4 gap-2">
                                     <button class="edit-btn font-medium text-blue-600 hover:underline">Edit</button>
-                                    <button class="save-btn font-medium text-green-600 hover:underline hidden">Save</button>
+                                    <button
+                                        class="save-btn font-medium text-green-600 hover:underline hidden save_expense">Save</button>
+                                    <button
+                                        class="cancel-btn font-medium text-red-500 hover:underline hidden">Cancel</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -185,6 +214,45 @@
         </div>
 
     </div>
+
+    <div class="modal mt-0 p-0" id="expenseModal" tabindex="-1" aria-labelledby="expenseModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-xl sm:text-2xl font-medium text-gray-800" id="expenseModalLabel">
+                        Import recurrent expenses</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="csv-upload-form" enctype="multipart/form-data">
+                        @csrf
+                        <!-- Hidden file input -->
+                        <input type="file" name="csv_file" id="csv_file" accept=".csv" class="hidden" />
+                        <!-- Styled label acting as a button -->
+                        <label for="csv_file"
+                            class="cursor-pointer hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 mb-1 text-center text-base font-semibold text-white outline-none">
+                            Choose file
+                        </label>
+
+                        <button
+                            class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
+                            type="button" id="upload_csv">
+                            Upload csv
+                        </button>
+
+                    </form>
+                    <div class="w-full rounded-lg shadow overflow-hidden" id="response"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function updateSelectColor(select) {
+            let selectedOption = select.options[select.selectedIndex];
+            select.style.backgroundColor = selectedOption.style.backgroundColor;
+        }
+    </script>
 </x-layout.app>
 
 

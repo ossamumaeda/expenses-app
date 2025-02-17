@@ -149,7 +149,7 @@
                                 <td class="flex items-center px-3 py-4 gap-2 ">
                                     <button class="edit-btn font-medium text-blue-600 hover:underline">Edit</button>
                                     <button
-                                        class="save-btn font-medium text-green-600 hover:underline hidden">Save</button>
+                                        class="save-btn font-medium text-green-600 hover:underline hidden" id="save-recurrent">Save</button>
                                     <button
                                         class="cancel-btn font-medium text-red-500 hover:underline hidden">Cancel</button>
                                 </td>
