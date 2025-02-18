@@ -33,6 +33,7 @@ class DashboardController extends Controller
 
         // List of all the expenses
         $allExpenses = $this->expenseService->getAll();
+        $countExpenses = count($allExpenses); 
 
         // Sum of the expenses
         $expensesTotalCost = $this->expenseService->getCostSum();
@@ -42,9 +43,11 @@ class DashboardController extends Controller
         // Get all the payment methods
         $paymentMethods = $this->paymentMethodService->getAll();
 
+        $todayMonth = date("F");
+
         // dd($expensesByType);
 
-        return view('dashboard', compact('chartLabels', 'chartData', 'chartColor', 'allExpenses', 'expensesByType','expenseTypes','expensesTotalCost','paymentMethods'));
+        return view('dashboard.index', compact('chartLabels', 'chartData', 'chartColor', 'allExpenses', 'countExpenses','expensesByType','expenseTypes','expensesTotalCost','paymentMethods','todayMonth'));
     }
 
     public function createMany(){

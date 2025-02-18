@@ -129,5 +129,122 @@ $(document).ready(function() {
       });
   });
 
+  $("#new-expense-btn").click(function() {
+    console.log("CLICK")
+    $("#new-expense-form").toggleClass("hidden block");
+    $("#new-expense-btn").toggleClass("hidden block");
+    $("#new-expense-cancel-btn").toggleClass("hidden block");
+  });
+
+  $("#new-expense-cancel-btn").click(function(){
+    $("#new-expense-form").toggleClass("block hidden");
+    $("#new-expense-btn").toggleClass("hidden block");
+    $("#new-expense-cancel-btn").toggleClass("block hidden");
+  });
+
+  $('#csv_file').on('change', function () {
+    if ($(this).val()) {
+        $('#csv-upload-form').submit(); // Auto-submit the form
+    }
+  });
+
+  $('#csv-upload-form').submit(function (event) {
+    console.log("Changes");
+    event.preventDefault(); // Prevent form submission
+
+    var formData = new FormData(this); // Create FormData object with the form data
+
+    $.ajax({
+        url: '/api/upload-csv', // API route
+        type: 'POST',
+        data: formData,
+        processData: false, // Prevent jQuery from processing the data
+        contentType: false, // Prevent jQuery from setting contentType
+        success: function (response) {
+            let table = `
+            <table class="w-full" id="table-expenses">
+            <thead class="bg-gray-50 border-b-2 border-gray-200">
+                <tr>
+                    <th class="w-70 p-3 text-sm font-semibold tracking-wide text-left">Name</th>
+                    <th class="w-70 p-3 text-sm font-semibold tracking-wide text-left">Description</th>
+                    <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Cost</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+            `;
+            response.forEach(line => {
+                table = table.concat(`
+                    <tr class="odd:bg-white" data-id="{{ $expense->id }}">
+                        <td class="p-3 text-base text-gray-900">
+                            <span class="view-mode"> ${line['name']} </span>
+                        </td>
+                        <td class="p-3 text-base text-gray-900">
+                            <span class="view-mode"> ${line['description']} </span>
+                        </td>
+                        <td class="p-3 text-base text-gray-900">
+                            <span class="view-mode"> ${line['cost']} </span>
+                        </td>
+                    </tr>
+                `);
+            });
+            table =  table.concat(`
+                </tbody>
+            </table>
+            `);
+            $('#response').empty();
+            $('#response').append(table);
+        },
+        error: function (xhr, status, error) {
+            $('#response').html('Error: ' + error);
+        }
+    });
+  });
+
+  $("#upload_csv").click(function(){
+    let tableData = [];
+
+    $('#table-expenses tbody tr').each(function () {
+        let row = $(this).find('td'); // Get all <td> in the row
+        let rowData = {
+            name: row.eq(0).find('span').text().trim(),
+            description: row.eq(1).find('span').text().trim(),
+            cost: row.eq(2).find('span').text().trim(),
+        };
+        tableData.push(rowData);
+    });
+    
+    if(!tableData.length){
+      return;
+    }
+
+    $.ajax({
+        url: '/api/expenses-create', // Change to your API route
+        type: 'POST',
+        data: JSON.stringify({ expenses: tableData }),
+        contentType: 'application/json',
+        success: function (response) {
+          $("#expenseModal").modal("hide");
+          $('#response').empty();
+        },
+        error: function (xhr) {
+            alert('Failed to send data.');
+            console.error(xhr);
+        }
+    });
+  });
+
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  const myModal = document.getElementById("expenseModal");
+  const contentDiv = document.getElementById("response"); // Change this to your actual div ID
+  const fileInput = document.getElementById("csv_file");
+
+  if (myModal) {
+      myModal.addEventListener("hidden.bs.modal", function () {
+          document.querySelectorAll(".modal-backdrop").forEach(el => el.remove());
+          contentDiv.innerHTML = ""; // Clears the content of the div
+          fileInput.value = ""; 
+      });
+  }
+});
