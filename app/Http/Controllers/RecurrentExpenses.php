@@ -26,6 +26,6 @@ class RecurrentExpenses extends Controller
         $chartData = $recurrentExpenses->pluck('cost')->toArray(); // Values
         $chartColor = $recurrentExpenses->pluck('color')->toArray(); // Values
 
-        return view('recurringExpenses', compact('recurrentExpenses','recurrentExpensesSum','chartLabels','chartData', 'chartColor'));
+        return view('recurringExpenses.index', compact('recurrentExpenses','recurrentExpensesSum','chartLabels','chartData', 'chartColor'));
     }
 }

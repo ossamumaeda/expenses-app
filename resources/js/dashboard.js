@@ -131,7 +131,6 @@ $(document).ready(function() {
     });
 
     $("#new-expense-btn").click(function() {
-        console.log("CLICK")
         $("#new-expense-form").toggleClass("hidden block");
         $("#new-expense-btn").toggleClass("hidden block");
         $("#new-expense-cancel-btn").toggleClass("hidden block");
@@ -234,6 +233,8 @@ $(document).ready(function() {
         });
     });
 
+
+    // Filters
     $('#expense-filter').on('change',function() {
         filterCategory();
         let select = $('#expense-filter'); 

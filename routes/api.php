@@ -28,3 +28,5 @@ Route::post('/expenses-create', [ExpenseController::class, 'createMany'])->name(
 Route::post('/recurrent-expenses', [RecurrentExpenseController::class, 'store'])->name('recurrent-expenses.store');
 Route::post('/recurrent-expenses-update', [RecurrentExpenseController::class, 'update'])->name('recurrent-expenses.update');
 
+Route::post('/recurrent-create', [RecurrentExpenseController::class, 'createMany'])->name('recurrent-expenses.store-many');
+

@@ -81,4 +81,32 @@ class RecurrentExpenseController extends Controller
         }
     }
     
+    public function createMany(Request $request)
+    {
+        $expenses = [];
+        foreach ($request->expenses as $expenseData) {
+            $expenseData['cost'] = (float) $expenseData['cost'];
+            $expenseData['color'] = '#FFF';
+            $expenseData['starting_date'] = now();
+            $expenseData['frequency'] = 'monthly';
+            $expenses[] = $expenseData;
+        }
+
+        // Update the request with the casted values
+        $request->merge(['expenses' => $expenses]);
+        // Validate the request data
+        $request->validate([
+            'expenses' => 'required|array',
+            'expenses.*.name' => 'required|string|max:255',
+            'expenses.*.cost' => 'required|numeric|min:0',
+            'expenses.*.description' => 'string|max:255',
+            'expenses.*.color' => 'string|max:20',
+            'frequency' => 'nullable|string',
+        ]);
+
+        $this->recurrentExpenseService->storeMany($request->expenses);
+
+        return response()->json(['message' => 'Recurrent expenses added successfully!'], 201);
+    }
+
 }

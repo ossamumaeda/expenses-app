@@ -31,9 +31,14 @@ class RecurrentExpenseService
         return $expense;
     }
 
+    public function storeMany($data){
+        foreach ($data as $expenseData) {
+            RecurrentExpenses::create($expenseData);
+        }
+    }
+
     public function update($data)
     {
-        // dd($data);
         $recurrentExpense = RecurrentExpenses::find($data['id']);
         $recurrentExpense->update($data);
 

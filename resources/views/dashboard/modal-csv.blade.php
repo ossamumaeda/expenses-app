@@ -5,7 +5,7 @@ aria-hidden="true">
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title text-xl sm:text-2xl font-medium text-gray-800" id="expenseModalLabel">
-                Import recurrent expenses</h5>
+                Import Expenses</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
