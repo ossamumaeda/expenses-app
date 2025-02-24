@@ -235,13 +235,13 @@ $(document).ready(function() {
     });
 
     $('#expense-filter').on('change',function() {
-        filterCategory('expense-filter','expense-type');
+        filterCategory();
         let select = $('#expense-filter'); 
         changeElementBackgroundColor(select);
     });
 
     $('#payment-filter').on('change',function() {
-        filterCategory('payment-filter','payment-type');
+        filterCategory();
         let select = $('#payment-filter'); 
         changeElementBackgroundColor(select);
     });
@@ -256,6 +256,11 @@ $(document).ready(function() {
         myFunction(); // Call your function when the user types
     });
     
+    $("#view-all-btn").click(function() {
+        $('#payment-filter').val('-1').change()
+        $('#expense-filter').val('-1').change()
+    });
+
 });
 
 
@@ -288,7 +293,6 @@ function myFunction() {
 
 function changeElementBackgroundColor(select){
     let selectedOption = select.find(':selected'); // Get selected <option>
-
     // Get the background color of the selected option
     let bgColor = selectedOption.css('background-color');
 
@@ -296,8 +300,6 @@ function changeElementBackgroundColor(select){
     select.css('background-color', bgColor);
 }
 
-// How can i make a filter that respects both payment and expenses type?
-// Maybe unite this function, to always check if one of the selects has a input. Get by the ids
 function filterCategory(){ 
     let filterExpense = $('#expense-filter').find('option:selected').text();
     let filterPayment = $('#payment-filter').find('option:selected').text();

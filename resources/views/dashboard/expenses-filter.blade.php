@@ -54,7 +54,7 @@
     <div class="mt-4 mb-4 md:flex md:items-center md:justify-between">
         <div class="justify-between flex flex-row gap-2">
             <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse ">
-                <button
+                <button id="view-all-btn"
                     class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm ">
                     View all
                 </button>
