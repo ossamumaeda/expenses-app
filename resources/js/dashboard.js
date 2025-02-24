@@ -58,182 +58,283 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+
 $(document).ready(function() {
 
-  $(".edit-btn").click(function() {
-    var row = $(this).closest("tr");
+    $(".edit-btn").click(function() {
+        var row = $(this).closest("tr");
 
-    // Hide "view-mode" spans and show input fields
-    row.find(".view-mode").addClass("hidden");
-    row.find(".edit-mode").removeClass("hidden");
+        // Hide "view-mode" spans and show input fields
+        row.find(".view-mode").addClass("hidden");
+        row.find(".edit-mode").removeClass("hidden");
 
-    // Show "Save" button, hide "Edit" button
-    row.find(".edit-btn").addClass("hidden");
-    row.find(".save-btn").removeClass("hidden");
-    row.find(".cancel-btn").removeClass("hidden");
-  });
+        // Show "Save" button, hide "Edit" button
+        row.find(".edit-btn").addClass("hidden");
+        row.find(".save-btn").removeClass("hidden");
+        row.find(".cancel-btn").removeClass("hidden");
+    });
 
-  $(".save_expense").click(function() {
+    $(".save_expense").click(function() {
 
-      var row = $(this).closest("tr");
-      var expenseId = row.data("id");
+        var row = $(this).closest("tr");
+        var expenseId = row.data("id");
 
-      // Get updated values
-      var updatedData = {
-          id: expenseId,
-          name: row.find("#name-"+expenseId).val(),
-          cost: row.find("#cost-"+expenseId).val(),
-          installments: row.find("#installment-"+expenseId).val(),
-          expense_type_id:row.find("#expenseType-"+expenseId).val(),
-          payment_method_id:row.find("#paymentMethod-"+expenseId).val()
-      };
+        // Get updated values
+        var updatedData = {
+            id: expenseId,
+            name: row.find("#name-"+expenseId).val(),
+            cost: row.find("#cost-"+expenseId).val(),
+            installments: row.find("#installment-"+expenseId).val(),
+            expense_type_id:row.find("#expenseType-"+expenseId).val(),
+            payment_method_id:row.find("#paymentMethod-"+expenseId).val()
+        };
 
-      let expenseType = row.find("#expenseType-" + expenseId)[0]; // Get the DOM element
-      let selectedOption = expenseType.options[expenseType.selectedIndex]; // Get the selected <option>
-      let selectedColor = selectedOption.style.backgroundColor; // Get its background color
-      let selectedLabel = selectedOption.text.trim(); // Get selected option text
-      
-      let paymentMethod = row.find("#paymentMethod-" + expenseId)[0]; // Get the DOM element
-      let paymentOption = paymentMethod.options[paymentMethod.selectedIndex]; // Get the selected <option>
-      let paymentColor = paymentOption.style.backgroundColor; // Get its background color
-      let paymentLabel = paymentOption.text.trim(); // Get selected option text
+        let expenseType = row.find("#expenseType-" + expenseId)[0]; // Get the DOM element
+        let selectedOption = expenseType.options[expenseType.selectedIndex]; // Get the selected <option>
+        let selectedColor = selectedOption.style.backgroundColor; // Get its background color
+        let selectedLabel = selectedOption.text.trim(); // Get selected option text
+        
+        let paymentMethod = row.find("#paymentMethod-" + expenseId)[0]; // Get the DOM element
+        let paymentOption = paymentMethod.options[paymentMethod.selectedIndex]; // Get the selected <option>
+        let paymentColor = paymentOption.style.backgroundColor; // Get its background color
+        let paymentLabel = paymentOption.text.trim(); // Get selected option text
 
-      // Send AJAX request to update the database (if needed)
-      $.ajax({
-          url: "/api/expenses-update",  // Adjust your route
-          type: "POST",
-          data: updatedData,
-          headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }, // Laravel CSRF token
-          success: function(response) {
-              // Update UI with new values
-              row.find("#view-name-"+expenseId).text(updatedData.name);
-              row.find("#view-installment-"+expenseId).text(updatedData.installments);
-              row.find("#view-cost-"+expenseId).text(updatedData.cost);
+        // Send AJAX request to update the database (if needed)
+        $.ajax({
+            url: "/api/expenses-update",  // Adjust your route
+            type: "POST",
+            data: updatedData,
+            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }, // Laravel CSRF token
+            success: function(response) {
+                // Update UI with new values
+                row.find("#view-name-"+expenseId).text(updatedData.name);
+                row.find("#view-installment-"+expenseId).text(updatedData.installments);
+                row.find("#view-cost-"+expenseId).text(updatedData.cost);
 
-              row.find("#view-type-" + expenseId).text(selectedLabel);
-              row.find("#view-type-" + expenseId).css("background-color",selectedColor);
+                row.find("#view-type-" + expenseId).text(selectedLabel);
+                row.find("#view-type-" + expenseId).css("background-color",selectedColor);
 
-              row.find("#view-payment-" + expenseId).text(paymentLabel);
-              row.find("#view-payment-" + expenseId).css("background-color",paymentColor);
+                row.find("#view-payment-" + expenseId).text(paymentLabel);
+                row.find("#view-payment-" + expenseId).css("background-color",paymentColor);
 
-              // Hide input fields and show updated spans
-              row.find(".view-mode").removeClass("hidden");
-              row.find(".edit-mode").addClass("hidden");
+                // Hide input fields and show updated spans
+                row.find(".view-mode").removeClass("hidden");
+                row.find(".edit-mode").addClass("hidden");
 
-              // Show "Edit" button, hide "Save" button
-              row.find(".edit-btn").removeClass("hidden");
-              row.find(".save-btn").addClass("hidden");
-              row.find(".cancel-btn").addClass("hidden");
+                // Show "Edit" button, hide "Save" button
+                row.find(".edit-btn").removeClass("hidden");
+                row.find(".save-btn").addClass("hidden");
+                row.find(".cancel-btn").addClass("hidden");
 
-          }
-      });
-  });
+            }
+        });
+    });
 
-  $("#new-expense-btn").click(function() {
-    console.log("CLICK")
-    $("#new-expense-form").toggleClass("hidden block");
-    $("#new-expense-btn").toggleClass("hidden block");
-    $("#new-expense-cancel-btn").toggleClass("hidden block");
-  });
+    $("#new-expense-btn").click(function() {
+        console.log("CLICK")
+        $("#new-expense-form").toggleClass("hidden block");
+        $("#new-expense-btn").toggleClass("hidden block");
+        $("#new-expense-cancel-btn").toggleClass("hidden block");
+    });
 
-  $("#new-expense-cancel-btn").click(function(){
-    $("#new-expense-form").toggleClass("block hidden");
-    $("#new-expense-btn").toggleClass("hidden block");
-    $("#new-expense-cancel-btn").toggleClass("block hidden");
-  });
+    $("#new-expense-cancel-btn").click(function(){
+        $("#new-expense-form").toggleClass("block hidden");
+        $("#new-expense-btn").toggleClass("hidden block");
+        $("#new-expense-cancel-btn").toggleClass("block hidden");
+    });
 
-  $('#csv_file').on('change', function () {
-    if ($(this).val()) {
-        $('#csv-upload-form').submit(); // Auto-submit the form
-    }
-  });
-
-  $('#csv-upload-form').submit(function (event) {
-    console.log("Changes");
-    event.preventDefault(); // Prevent form submission
-
-    var formData = new FormData(this); // Create FormData object with the form data
-
-    $.ajax({
-        url: '/api/upload-csv', // API route
-        type: 'POST',
-        data: formData,
-        processData: false, // Prevent jQuery from processing the data
-        contentType: false, // Prevent jQuery from setting contentType
-        success: function (response) {
-            let table = `
-            <table class="w-full" id="table-expenses">
-            <thead class="bg-gray-50 border-b-2 border-gray-200">
-                <tr>
-                    <th class="w-70 p-3 text-sm font-semibold tracking-wide text-left">Name</th>
-                    <th class="w-70 p-3 text-sm font-semibold tracking-wide text-left">Description</th>
-                    <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Cost</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100">
-            `;
-            response.forEach(line => {
-                table = table.concat(`
-                    <tr class="odd:bg-white" data-id="{{ $expense->id }}">
-                        <td class="p-3 text-base text-gray-900">
-                            <span class="view-mode"> ${line['name']} </span>
-                        </td>
-                        <td class="p-3 text-base text-gray-900">
-                            <span class="view-mode"> ${line['description']} </span>
-                        </td>
-                        <td class="p-3 text-base text-gray-900">
-                            <span class="view-mode"> ${line['cost']} </span>
-                        </td>
-                    </tr>
-                `);
-            });
-            table =  table.concat(`
-                </tbody>
-            </table>
-            `);
-            $('#response').empty();
-            $('#response').append(table);
-        },
-        error: function (xhr, status, error) {
-            $('#response').html('Error: ' + error);
+    $('#csv_file').on('change', function () {
+        if ($(this).val()) {
+            $('#csv-upload-form').submit(); // Auto-submit the form
         }
     });
-  });
 
-  $("#upload_csv").click(function(){
-    let tableData = [];
+    $('#csv-upload-form').submit(function (event) {
+        console.log("Changes");
+        event.preventDefault(); // Prevent form submission
 
-    $('#table-expenses tbody tr').each(function () {
-        let row = $(this).find('td'); // Get all <td> in the row
-        let rowData = {
-            name: row.eq(0).find('span').text().trim(),
-            description: row.eq(1).find('span').text().trim(),
-            cost: row.eq(2).find('span').text().trim(),
-        };
-        tableData.push(rowData);
+        var formData = new FormData(this); // Create FormData object with the form data
+
+        $.ajax({
+            url: '/api/upload-csv', // API route
+            type: 'POST',
+            data: formData,
+            processData: false, // Prevent jQuery from processing the data
+            contentType: false, // Prevent jQuery from setting contentType
+            success: function (response) {
+                let table = `
+                <table class="w-full" id="table-expenses">
+                <thead class="bg-gray-50 border-b-2 border-gray-200">
+                    <tr>
+                        <th class="w-70 p-3 text-sm font-semibold tracking-wide text-left">Name</th>
+                        <th class="w-70 p-3 text-sm font-semibold tracking-wide text-left">Description</th>
+                        <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Cost</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                `;
+                response.forEach(line => {
+                    table = table.concat(`
+                        <tr class="odd:bg-white" data-id="{{ $expense->id }}">
+                            <td class="p-3 text-base text-gray-900">
+                                <span class="view-mode"> ${line['name']} </span>
+                            </td>
+                            <td class="p-3 text-base text-gray-900">
+                                <span class="view-mode"> ${line['description']} </span>
+                            </td>
+                            <td class="p-3 text-base text-gray-900">
+                                <span class="view-mode"> ${line['cost']} </span>
+                            </td>
+                        </tr>
+                    `);
+                });
+                table =  table.concat(`
+                    </tbody>
+                </table>
+                `);
+                $('#response').empty();
+                $('#response').append(table);
+            },
+            error: function (xhr, status, error) {
+                $('#response').html('Error: ' + error);
+            }
+        });
+    });
+
+    $("#upload_csv").click(function(){
+        let tableData = [];
+
+        $('#table-expenses tbody tr').each(function () {
+            let row = $(this).find('td'); // Get all <td> in the row
+            let rowData = {
+                name: row.eq(0).find('span').text().trim(),
+                description: row.eq(1).find('span').text().trim(),
+                cost: row.eq(2).find('span').text().trim(),
+            };
+            tableData.push(rowData);
+        });
+        
+        if(!tableData.length){
+        return;
+        }
+
+        $.ajax({
+            url: '/api/expenses-create', // Change to your API route
+            type: 'POST',
+            data: JSON.stringify({ expenses: tableData }),
+            contentType: 'application/json',
+            success: function (response) {
+            $("#expenseModal").modal("hide");
+            $('#response').empty();
+            },
+            error: function (xhr) {
+                alert('Failed to send data.');
+                console.error(xhr);
+            }
+        });
+    });
+
+    $('#expense-filter').on('change',function() {
+        filterCategory('expense-filter','expense-type');
+        let select = $('#expense-filter'); 
+        changeElementBackgroundColor(select);
+    });
+
+    $('#payment-filter').on('change',function() {
+        filterCategory('payment-filter','payment-type');
+        let select = $('#payment-filter'); 
+        changeElementBackgroundColor(select);
     });
     
-    if(!tableData.length){
-      return;
+    $(".trigger-color").on("change",function(){
+        let id = $(this).attr("id"); // Get the ID of the element that triggered the event
+        let select = $('#'+id); 
+        changeElementBackgroundColor(select);
+    });
+
+    $("#myInput").on("keyup", function() {
+        myFunction(); // Call your function when the user types
+    });
+    
+});
+
+
+function myFunction() {
+    const trs = document.querySelectorAll('#table-expenses-dashboard tr:not(.header)')
+    const filter = document.querySelector('#myInput').value
+    const regex = new RegExp(filter, 'i')
+    const isFoundInTds = (td) => {
+        // Get text from the <span> inside the <td>
+        const spanText = td.querySelector('span') ? td.querySelector('span').textContent.trim() : '';
+
+        // Get selected value from the <select> inside the <td>
+        const selectValue = td.querySelector('select') ? td.querySelector('select').value.trim() : '';
+
+        // Check if the search term matches either span text or select value
+        return regex.test(spanText) || regex.test(selectValue);
+    };
+    const isFound = childrenArr => childrenArr.some(isFoundInTds)
+    const setTrStyleDisplay = ({
+        style,
+        children
+    }) => {
+        style.display = isFound([
+            ...children // <-- All columns
+        ]) ? '' : 'none'
     }
 
-    $.ajax({
-        url: '/api/expenses-create', // Change to your API route
-        type: 'POST',
-        data: JSON.stringify({ expenses: tableData }),
-        contentType: 'application/json',
-        success: function (response) {
-          $("#expenseModal").modal("hide");
-          $('#response').empty();
-        },
-        error: function (xhr) {
-            alert('Failed to send data.');
-            console.error(xhr);
-        }
-    });
-  });
+    trs.forEach(setTrStyleDisplay)
+}
 
-});
+function changeElementBackgroundColor(select){
+    let selectedOption = select.find(':selected'); // Get selected <option>
+
+    // Get the background color of the selected option
+    let bgColor = selectedOption.css('background-color');
+
+    // Apply it to the select element
+    select.css('background-color', bgColor);
+}
+
+// How can i make a filter that respects both payment and expenses type?
+// Maybe unite this function, to always check if one of the selects has a input. Get by the ids
+function filterCategory(){ 
+    let filterExpense = $('#expense-filter').find('option:selected').text();
+    let filterPayment = $('#payment-filter').find('option:selected').text();
+
+    const regexExpense = filterExpense == "Select All" ? false : new RegExp(filterExpense, 'i');
+    const regexPayment = filterPayment == "Select All" ? false : new RegExp(filterPayment, 'i');
+    
+    const isFoundInTds = (childrenArr) => {
+        let expense = true;
+        let payment = true;
+        childrenArr.forEach(td => {
+            if(td.id == 'id-expense' && regexExpense){
+                const expenseText = td.querySelector('span#expense-type') ? td.querySelector('span#expense-type').textContent.trim() : '';
+                expense =  regexExpense.test(expenseText)
+            }
+            else if(td.id == 'id-payment' && regexPayment){
+                const paymentText = td.querySelector('span#payment-type') ? td.querySelector('span#payment-type').textContent.trim() : '';
+                payment =  regexPayment.test(paymentText)
+            }
+        });
+        return (expense && payment);
+    };
+    // For each child, wich means -> Each column of the row, calls isFoundIn Tds 
+    const setTrStyleDisplay = ({
+        style,
+        children
+    }) => {
+        style.display = isFoundInTds([
+            ...children // <-- All columns
+        ]) ? '' : 'none'
+    }
+
+    // Gett all the rows in the table
+    const trs = document.querySelectorAll('#table-expenses-dashboard tr:not(.header)')
+    // For each rows call the function
+    trs.forEach(setTrStyleDisplay)
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   const myModal = document.getElementById("expenseModal");

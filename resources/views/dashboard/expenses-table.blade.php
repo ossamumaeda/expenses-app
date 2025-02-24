@@ -25,8 +25,8 @@
                     </td>
 
                     <!-- Editable Category Field -->
-                    <td class="p-3 text-sm text-gray-700">
-                        <span class="view-mode">
+                    <td class="p-3 text-sm text-gray-700" id="id-expense">
+                        <span class="view-mode" id="expense-type">
                             <span
                                 class="p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 break-words w-full inline-block text-center"
                                 style="background-color: {{ $expense->expenseType->color }}"
@@ -35,9 +35,9 @@
                             </span>
                         </span>
                         <select
-                            class="edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
+                            class="trigger-color edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
                             style="background-color: {{ $expense->expenseType->color }};"
-                            id="expenseType-{{ $expense->id }}" onchange="updateSelectColor(this)">
+                            id="expenseType-{{ $expense->id }}" >
                             @foreach ($expenseTypes as $type)
                                 <option value="{{ $type->id }}" class="text-gray-700"
                                     style="background-color: {{ $type->color }};font-weight: bold;"
@@ -49,8 +49,8 @@
                     </td>
 
                     <!-- Editable Payment Field -->
-                    <td class="p-3 text-sm text-gray-700">
-                        <span class="view-mode block w-full">
+                    <td class="p-3 text-sm text-gray-700" id="id-payment">
+                        <span class="view-mode block w-full" id="payment-type">
                             <span
                                 class="p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 break-words w-full inline-block text-center"
                                 style="background-color: {{ $expense->paymentMethod->color }}"
@@ -60,9 +60,9 @@
                         </span>
 
                         <select
-                            class="edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
+                            class="trigger-color edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
                             style="background-color: {{ $expense->paymentMethod->color }};"
-                            id="paymentMethod-{{ $expense->id }}" onchange="updateSelectColor(this)">
+                            id="paymentMethod-{{ $expense->id }}" >
                             @foreach ($paymentMethods as $method)
                                 <option value="{{ $method->id }}" class="text-gray-700"
                                     style="background-color: {{ $method->color }};font-weight: bold;"

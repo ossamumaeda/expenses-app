@@ -61,10 +61,23 @@
             </div>
             <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse ">
                 <select
-                    class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm "
-                    id="expense_type_id" name="expense_type_id" style="background-color: {{ $expenseTypes[0]->color }};"
-                    onchange="updateSelectColor(this)">
+                    class="focus:outline-none px-5 py-2 text-xs font-medium text-gray-600   sm:text-sm "
+                    id="expense-filter" name="expense_type_id" style="background-color:#FFF">
+                    <option class="text-gray-700" style="background-color: #FFF;font-weight: bold;"
+                        value=-1>Select All</option>
                     @foreach ($expenseTypes as $types)
+                        <option class="text-gray-700" style="background-color: {{ $types->color }};font-weight: bold;"
+                            value={{ $types->id }}>{{ $types->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse ">
+                <select
+                    class="focus:outline-none px-5 py-2 text-xs font-medium text-gray-600   sm:text-sm "
+                    id="payment-filter" name="payment_method_id" style="background-color:#FFF">
+                    <option class="text-gray-700" style="background-color: #FFF;font-weight: bold;"
+                        value=-1>Select All</option>
+                    @foreach ($paymentMethods as $types)
                         <option class="text-gray-700" style="background-color: {{ $types->color }};font-weight: bold;"
                             value={{ $types->id }}>{{ $types->name }}</option>
                     @endforeach
@@ -74,9 +87,10 @@
 
 
         <div class="relative flex items-center mt-4 md:mt-0">
-            <input type="text" placeholder="Search" onkeyup="myFunction()" id="myInput"
+            <input type="text" placeholder="Search" id="myInput"
                 class="block w-full py-2 pr-2 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-5 rtl:pr-11 rtl:pl-5
           focus:border-blue-400  focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
         </div>
+        
     </div>
 </div>
