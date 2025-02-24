@@ -21,4 +21,15 @@ class PaymentMethodService {
         return $paymentMethod;
     }
 
+    public function store($data){
+        PaymentMethod::create([
+            'name' => $data['name'],
+            'description' => $data['description'],
+        ]);
+    }
+
+    public function findById($id){
+        return PaymentMethod::find($id);
+    }
+
 }

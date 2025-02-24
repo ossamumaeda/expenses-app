@@ -20,6 +20,10 @@ class ExpenseService {
         return $expenses;
     }
 
+    public function getById($id){
+        return Expense::find($id);
+    }
+
     public function getByType(){
         $totalCost = self::getCostSum(); // Get total cost
 
@@ -43,6 +47,10 @@ class ExpenseService {
         return $expenses;
     }
 
+    public function getWithJoins(){
+        return Expense::with(['expenseType', 'paymentMethod'])->get();
+    }
+
     public function update($data)
     {
         $expense = Expense::find($data['id']);
@@ -59,6 +67,12 @@ class ExpenseService {
     public function createExpense($data){
         $expense = Expense::create($data);
         return $expense;
+    }
+
+    public function createMany($data){
+        foreach ($data as $expenseData) {
+            Expense::create($expenseData);
+        }
     }
 
     public function getCostSum(){

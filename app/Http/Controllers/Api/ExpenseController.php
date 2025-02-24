@@ -20,13 +20,13 @@ class ExpenseController extends Controller
 
     public function index()
     {
-        $expenses = Expense::with(['expenseType', 'paymentMethod'])->get();
+        $expenses = $this->expenseService->getWithJoins();
         return response()->json($expenses);
     }
 
     public function getById($id)
     {
-        $expense = Expense::find($id);
+        $expense = $this->expenseService->getById($id);
 
         if (!$expense) {
             return response()->json(['message' => 'Expense type not found'], 404);
@@ -63,8 +63,7 @@ class ExpenseController extends Controller
             // If the request comes from an API (expects a JSON response)
             return response()->json(
                 [
-                    'message' => 'Record created successfully!',
-                    'data' => Expense::latest()->first(), // Optionally return the newly created data
+                    'message' => 'Record created successfully!'
                 ],
                 201,
             );
@@ -143,9 +142,7 @@ class ExpenseController extends Controller
         ]);
 
         // Insert each expense into the database
-        foreach ($request->expenses as $expenseData) {
-            Expense::create($expenseData);
-        }
+        $this->expenseService->createMany($request->expenses);
 
         return response()->json(['message' => 'Expenses added successfully!'], 201);
     }

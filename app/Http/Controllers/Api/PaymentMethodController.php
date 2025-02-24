@@ -20,13 +20,13 @@ class PaymentMethodController extends Controller
 
     public function index()
     {
-        $payment_methods = PaymentMethod::all();
+        $payment_methods = $this->paymentMethodService->getAll();
         return response()->json($payment_methods); 
     }
 
     public function getById($id)
     {
-        $paymentMethod = PaymentMethod::find($id);
+        $paymentMethod = $this->paymentMethodService->findById($id);
 
         if (!$paymentMethod) {
             return response()->json(['message' => 'Expense type not found'], 404);
@@ -42,10 +42,7 @@ class PaymentMethodController extends Controller
             'description' => 'string|max:255'
         ]);
 
-        $paymentMethod = PaymentMethod::create([
-            'name' => $validated['name'],
-            'description' => $validated['description'],
-        ]);
+        $paymentMethod = $this->paymentMethodService->store($validated);
         return response()->json($paymentMethod, 201);
     }
 
