@@ -1,3 +1,6 @@
+@section('scripts')
+    @vite(['resources/js/dashboard.js'])
+@endsection
 <x-layout.app>
     <div id="layout" class="sm:p-10 p-4 space-y-10 ">
         <div class="w-fulll flex flex-col rounded-lg shadow-lg sm:p-4 p-2 gap-y-5" id="parent">

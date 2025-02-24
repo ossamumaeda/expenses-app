@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
+use App\Http\Controllers\Controller;
 
-use App\Models\Expense;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Http\Request;
 use App\Services\ExpenseService;
 use App\Services\ExpenseTypeService;
 use App\Services\PaymentMethodService;

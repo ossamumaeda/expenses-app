@@ -1,3 +1,6 @@
+@section('scripts')
+    @vite(['resources/js/recurrentExpenses.js'])
+@endsection
 <x-layout.app>
 
     <div id="layout" class="sm:p-10 p-2 space-y-10 ">

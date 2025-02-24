@@ -5,9 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\Models\ExpenseType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\ExpenseTypeService;
+use Illuminate\Validation\ValidationException;
 
 class ExpenseTypeController extends Controller
 {
+    protected $expenseTypeService;
+
+    public function __construct(ExpenseTypeService $expenseTypeService)
+    {
+        $this->expenseTypeService = $expenseTypeService;
+    }
+
     public function index()
     {
         $types = ExpenseType::all();
@@ -46,15 +55,31 @@ class ExpenseTypeController extends Controller
         return view('types.edit', compact('type'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        $type = ExpenseType::findOrFail($id);
-        $type->update($request->all());
-        return redirect()->route('types.index');
+        try{
+            $validated = $request->validate([
+                'id' => 'numeric',
+                'name' => 'nullable|string|max:255',
+                'color' => 'nullable|string|max:255'
+            ]);
+            $this->expenseTypeService->update($validated);
+            if ($request->expectsJson() === false) {
+                // Return the same view and reload the page with a success message
+                return redirect()->back()->with('message', 'Record updated successfully!');
+            }
+        
+            // If the request comes from an API (expects a JSON response)
+            return response()->json([
+                'message' => 'Record created successfully!'
+            ], 201);
+        }
+        catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        }
     }
 
     public function destroy($id)

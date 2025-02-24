@@ -13,4 +13,11 @@ class ExpenseTypeService {
         return $expenseTypes;
     }
 
+    public function update($data)
+    {
+        $expenseType = ExpenseType::find($data['id']);
+        $expenseType->update($data);
+
+        return $expenseType;
+    }
 }

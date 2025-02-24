@@ -3,14 +3,14 @@
 use App\Http\Controllers\Api\PaymentMethodController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ExpenseTypeController;
-use App\Http\Controllers\RecurrentExpenseController;
+use App\Http\Controllers\Api\RecurrentExpenseController;
 use Illuminate\Support\Facades\Route;
-
-use Illuminate\Http\Request;
 
 Route::get('/types',[ExpenseTypeController::class,'index']);
 Route::get('/types/{id}',[ExpenseTypeController::class,'getById']);
 Route::post('/types', [ExpenseTypeController::class, 'store']);
+Route::post('/types-update', [ExpenseTypeController::class, 'update']);
+
 
 Route::get('/payment_methods',[PaymentMethodController::class,'index']);
 Route::get('/payment_methods/{id}',[PaymentMethodController::class,'getById']);

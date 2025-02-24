@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
 use App\Services\RecurrentExpenseService;
+use App\Http\Controllers\Controller;
 
 class RecurrentExpenseController extends Controller
 {
@@ -64,7 +65,7 @@ class RecurrentExpenseController extends Controller
             $this->recurrentExpenseService->update($validated);
             if ($request->expectsJson() === false) {
                 // Return the same view and reload the page with a success message
-                return redirect()->back()->with('message', 'Record created successfully!');
+                return redirect()->back()->with('message', 'Record updated successfully!');
             }
         
             // If the request comes from an API (expects a JSON response)
