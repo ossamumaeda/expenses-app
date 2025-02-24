@@ -15,6 +15,8 @@ Route::post('/types-update', [ExpenseTypeController::class, 'update']);
 Route::get('/payment_methods',[PaymentMethodController::class,'index']);
 Route::get('/payment_methods/{id}',[PaymentMethodController::class,'getById']);
 Route::post('/payment_methods', [PaymentMethodController::class, 'store']);
+Route::post('/payment-update', [PaymentMethodController::class, 'update']);
+
 
 Route::get('/expenses',[ExpenseController::class,'index'])->name('expenses.index');
 Route::get('/expenses/{id}',[ExpenseController::class,'getById']);

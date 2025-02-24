@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/js/expenseType.js',
                 'resources/js/dashboard.js',
                 'resources/js/recurrentExpenses.js',
+                'resources/js/paymentMethods.js',
             ],
             refresh: true,
         }),

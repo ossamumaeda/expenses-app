@@ -21,9 +21,5 @@ class ExpenseTypeController extends Controller
         return view('expenseTypes.index',compact('expenseTypes'));
     }
 
-    public function createMany(){
-        
-    }
-
 
 }

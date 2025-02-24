@@ -5,8 +5,19 @@ namespace App\Http\Controllers\Api;
 use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\PaymentMethodService;
+use Illuminate\Validation\ValidationException;
+
 class PaymentMethodController extends Controller
 {
+
+    protected $paymentMethodService;
+
+    public function __construct(PaymentMethodService $paymentMethodService)
+    {
+        $this->paymentMethodService = $paymentMethodService;
+    }
+
     public function index()
     {
         $payment_methods = PaymentMethod::all();
@@ -36,5 +47,32 @@ class PaymentMethodController extends Controller
             'description' => $validated['description'],
         ]);
         return response()->json($paymentMethod, 201);
+    }
+
+    public function update(Request $request)
+    {
+        try{
+            $validated = $request->validate([
+                'id' => 'numeric',
+                'name' => 'nullable|string|max:255',
+                'color' => 'nullable|string|max:255'
+            ]);
+            $this->paymentMethodService->update($validated);
+            if ($request->expectsJson() === false) {
+                // Return the same view and reload the page with a success message
+                return redirect()->back()->with('message', 'Record updated successfully!');
+            }
+        
+            // If the request comes from an API (expects a JSON response)
+            return response()->json([
+                'message' => 'Record created successfully!'
+            ], 201);
+        }
+        catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        }
     }
 }

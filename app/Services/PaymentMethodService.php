@@ -13,4 +13,12 @@ class PaymentMethodService {
         return $paymentMethod;
     }
 
+    public function update($data)
+    {
+        $paymentMethod = PaymentMethod::find($data['id']);
+        $paymentMethod->update($data);
+
+        return $paymentMethod;
+    }
+
 }
