@@ -17,6 +17,7 @@ return new class extends Migration
             $table->float('cost',precision:3);  // Amount of the expense
             $table->boolean('installments')->default(false);
             $table->dateTime('due_date')->useCurrent();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('expense_type_id')->constrained()->onDelete('cascade');  // Foreign key to types_of_expenses
             $table->foreignId('payment_method_id')->constrained()->onDelete('cascade');  // Foreign key to types_of_expenses
             $table->timestamps();

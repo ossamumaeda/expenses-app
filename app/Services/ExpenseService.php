@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Expense;
 use App\Models\RecurrentExpenses;
+use Illuminate\Support\Facades\Auth;
+
 /**
  * Will do the bridge between the models and the controller
  */
@@ -65,6 +67,7 @@ class ExpenseService {
     }
 
     public function createExpense($data){
+        $data['user_id'] = Auth::user()->id;
         $expense = Expense::create($data);
         return $expense;
     }

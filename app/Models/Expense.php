@@ -11,11 +11,11 @@ class Expense extends Model
     use HasFactory;
 
     protected $table = 'expenses';
-    protected $fillable = ['name', 'cost', 'expense_type_id', 'payment_method_id','installments','due_date'];
+    protected $fillable = ['name', 'cost', 'expense_type_id', 'payment_method_id', 'installments', 'due_date','user_id'];
     protected $attributes = [
-        'installments' => false
+        'installments' => false,
     ];
-    public  $timestamps = true;
+    public $timestamps = true;
 
     public function expenseType()
     {
@@ -24,7 +24,7 @@ class Expense extends Model
 
     public function paymentMethod()
     {
-        return $this->belongsTo(PaymentMethod::class, 'payment_method_id'); 
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
     }
 
     // Define the accessor for the 'due_date' field
@@ -32,5 +32,10 @@ class Expense extends Model
     {
         // You can format the date however you'd like
         return Carbon::parse($value)->format('d/m/Y'); // Example: 'DD-MM-YYYY HH:MM:SS'
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

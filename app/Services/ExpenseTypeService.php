@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\ExpenseType;
+use Illuminate\Support\Facades\Auth;
+
 /**
  * Will do the bridge between the models and the controller
  */
@@ -31,7 +33,8 @@ class ExpenseTypeService
         return ExpenseType::create([
             'name' => $data['name'],
             'description' => $data['description'],
-            'color' => $data['color']
+            'color' => $data['color'],
+            'user_id' => $data['user_id']
         ]);
     }
 
