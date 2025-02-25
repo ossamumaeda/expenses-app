@@ -40,6 +40,7 @@ class ExpenseTypeController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'string|max:255',
+            'color' => 'string'
         ]);
 
         $expenseType = $this->expenseTypeService->store($validated);

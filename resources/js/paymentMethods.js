@@ -57,4 +57,16 @@ $(document).ready(function() {
         row.find("#save-btn").addClass("hidden");
         row.find("#cancel-btn").addClass("hidden");
     });
+        // Create form
+    $("#new-recurrent-btn").click(function() {
+        $("#new-recurrent-form").toggleClass("hidden flex");
+        $("#new-recurrent-btn").toggleClass("hidden block");
+        $("#new-recurrent-cancel-btn").toggleClass("hidden block");
+    });
+
+    $("#new-recurrent-cancel-btn").click(function(){
+        $("#new-recurrent-form").toggleClass("flex hidden");
+        $("#new-recurrent-btn").toggleClass("hidden block");
+        $("#new-recurrent-cancel-btn").toggleClass("block hidden");
+    });
 });

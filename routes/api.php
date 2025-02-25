@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/types',[ExpenseTypeController::class,'index']);
 Route::get('/types/{id}',[ExpenseTypeController::class,'getById']);
-Route::post('/types', [ExpenseTypeController::class, 'store']);
+Route::post('/types', [ExpenseTypeController::class, 'store'])->name('types.store');
 Route::post('/types-update', [ExpenseTypeController::class, 'update']);
 
 
 Route::get('/payment_methods',[PaymentMethodController::class,'index']);
 Route::get('/payment_methods/{id}',[PaymentMethodController::class,'getById']);
-Route::post('/payment_methods', [PaymentMethodController::class, 'store']);
+Route::post('/payment_methods', [PaymentMethodController::class, 'store'])->name('payment-method.store');;
 Route::post('/payment-update', [PaymentMethodController::class, 'update']);
 
 

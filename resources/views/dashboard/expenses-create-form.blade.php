@@ -45,7 +45,7 @@
                         <select
                             class="w-full appearance-none py-3 px-6 edit-mode h-max p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0"
                             id="expense_type_id" name="expense_type_id"
-                            style="background-color: {{ $expenseTypes[0]->color }};"
+                            style="background-color: {{ $expenseTypes[0]->color ?? '#FFF'}};"
                             onchange="updateSelectColor(this)">
                             @foreach ($expenseTypes as $types)
                                 <option class="text-gray-700"
@@ -62,7 +62,7 @@
                         <select
                             class="w-full appearance-none py-3 px-6 edit-mode h-max p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0"
                             id="payment_method_id" name="payment_method_id"
-                            style="background-color: {{ $paymentMethods[0]->color }};"
+                            style="background-color: {{ $paymentMethods[0]->color ?? '#FFF' }};"
                             onchange="updateSelectColor(this)">
                             @foreach ($paymentMethods as $types)
                                 <option class="text-gray-700"

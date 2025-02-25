@@ -39,7 +39,8 @@ class PaymentMethodController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'string|max:255'
+            'description' => 'string|max:255',
+            'color' => 'string'
         ]);
 
         $paymentMethod = $this->paymentMethodService->store($validated);

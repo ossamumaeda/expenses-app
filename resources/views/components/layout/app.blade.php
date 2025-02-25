@@ -12,7 +12,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -20,13 +20,15 @@
     @vite(['resources/js/app.js'])
     @yield('scripts')
 </head>
-<x-sidebar /> 
 
 <body class="font-sans antialiased ">
     {{--  lg:ml-52 ml-14 --}}
-    <div class="flex flex-row">
-        <div class="flex-1 ">
-            {{ $slot }}
+    <div class="min-h-screen ">
+        @include('layouts.navigation')
+        <div class="flex flex-row">
+            <div class="flex-1 ">
+                {{ $slot }}
+            </div>
         </div>
     </div>
 </body>

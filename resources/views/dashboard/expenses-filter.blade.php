@@ -52,7 +52,7 @@
         </div>
     </div>
     <div class="mt-4 mb-4 md:flex md:items-center md:justify-between">
-        <div class="justify-between flex flex-row gap-2">
+        <div class="justify-between flex sm:flex-row flex-col gap-2">
             <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse ">
                 <button id="view-all-btn"
                     class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm ">
@@ -61,7 +61,7 @@
             </div>
             <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse ">
                 <select
-                    class="focus:outline-none px-5 py-2 text-xs font-medium text-gray-600   sm:text-sm "
+                    class="w-full appearance-none border-none focus:outline-none px-5 py-2 text-xs font-medium text-gray-600   sm:text-sm "
                     id="expense-filter" name="expense_type_id" style="background-color:#FFF">
                     <option class="text-gray-700" style="background-color: #FFF;font-weight: bold;"
                         value=-1>Select All</option>
@@ -73,7 +73,7 @@
             </div>
             <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse ">
                 <select
-                    class="focus:outline-none px-5 py-2 text-xs font-medium text-gray-600   sm:text-sm "
+                    class="w-full appearance-none border-none focus:outline-none px-5 py-2 text-xs font-medium text-gray-600   sm:text-sm "
                     id="payment-filter" name="payment_method_id" style="background-color:#FFF">
                     <option class="text-gray-700" style="background-color: #FFF;font-weight: bold;"
                         value=-1>Select All</option>

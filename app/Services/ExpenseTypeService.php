@@ -31,6 +31,7 @@ class ExpenseTypeService
         return ExpenseType::create([
             'name' => $data['name'],
             'description' => $data['description'],
+            'color' => $data['color']
         ]);
     }
 

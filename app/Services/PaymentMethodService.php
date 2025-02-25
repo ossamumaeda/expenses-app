@@ -25,6 +25,7 @@ class PaymentMethodService {
         PaymentMethod::create([
             'name' => $data['name'],
             'description' => $data['description'],
+            'color' => $data['color']
         ]);
     }
 
