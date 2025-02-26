@@ -65,21 +65,21 @@ $(document).ready(function() {
 
     // Create form
     $("#new-recurrent-btn").click(function() {
-        $("#new-recurrent-form").toggleClass("hidden flex");
+        $("#types-form").toggleClass("hidden flex");
         $("#new-recurrent-btn").toggleClass("hidden block");
         $("#new-recurrent-cancel-btn").toggleClass("hidden block");
     });
 
     $("#new-recurrent-cancel-btn").click(function(){
-        $("#new-recurrent-form").toggleClass("flex hidden");
+        $("#types-form").toggleClass("flex hidden");
         $("#new-recurrent-btn").toggleClass("hidden block");
         $("#new-recurrent-cancel-btn").toggleClass("block hidden");
     });
 
-    $("#new-recurrent-form").on('submit',function(){
+    $("#form-type").on('submit',function(){
         event.preventDefault(); // Prevent default form submission
         const token = localStorage.getItem('auth_token');
-        let formData = $(this).serialize();
+        let formData = $("#form-type").serialize();
         // Get updated values
 
         // Send AJAX request to update the database (if needed)

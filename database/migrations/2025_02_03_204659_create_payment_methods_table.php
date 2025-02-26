@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('name');  // Name of the expense type
             $table->string('color');  // Name of the expense type
             $table->text('description')->nullable();  // Description of the expense type
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

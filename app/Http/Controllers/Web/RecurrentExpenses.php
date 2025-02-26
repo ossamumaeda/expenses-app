@@ -7,7 +7,7 @@ use App\Models\Expense;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Services\RecurrentExpenseService;
-
+use Illuminate\Support\Facades\Auth;
 
 class RecurrentExpenses extends Controller
 {
@@ -20,8 +20,9 @@ class RecurrentExpenses extends Controller
 
     public function index()
     {
-        $recurrentExpenses = $this->recurrentExpenseService->getAll();
-        $recurrentExpensesSum =  $this->recurrentExpenseService->getSum();
+        $user_id = $user_id = Auth::user()->id;
+        $recurrentExpenses = $this->recurrentExpenseService->getAll($user_id);
+        $recurrentExpensesSum =  $this->recurrentExpenseService->getSum($user_id);
 
         $chartLabels = $recurrentExpenses->pluck('name')->toArray(); // Labels
         $chartData = $recurrentExpenses->pluck('cost')->toArray(); // Values

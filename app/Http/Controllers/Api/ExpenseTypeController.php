@@ -17,16 +17,19 @@ class ExpenseTypeController extends Controller
         $this->expenseTypeService = $expenseTypeService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $types = $this->expenseTypeService->getAll();
+        $user_id = $request->user()->id;
+        $types = $this->expenseTypeService->getAll($user_id);
         // return view('types.index', compact('types'));
         return response()->json($types);
     }
 
-    public function getById($id)
+    public function getById(Request $request)
     {
-        $expenseType = $this->expenseTypeService->getById($id);
+        $id = $request->route('id');
+        $user_id = $request->user()->id;
+        $expenseType = $this->expenseTypeService->getById($id,$user_id);
 
         if (!$expenseType) {
             return response()->json(['message' => 'Expense type not found'], 404);
@@ -37,25 +40,27 @@ class ExpenseTypeController extends Controller
 
     public function store(Request $request)
     {
+        $user_id = $request->user()->id;
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'string|max:255',
             'color' => 'string'
         ]);
         $validated['user_id'] = $request->user()->id;
-        $expenseType = $this->expenseTypeService->store($validated);
+        $expenseType = $this->expenseTypeService->store($validated,$user_id);
         return response()->json($expenseType, 201);
     }
 
     public function update(Request $request)
     {
         try {
+            $user_id = $request->user()->id;
             $validated = $request->validate([
                 'id' => 'numeric',
                 'name' => 'nullable|string|max:255',
                 'color' => 'nullable|string|max:255',
             ]);
-            $this->expenseTypeService->update($validated);
+            $this->expenseTypeService->update($validated,$user_id);
             if ($request->expectsJson() === false) {
                 // Return the same view and reload the page with a success message
                 return redirect()->back()->with('message', 'Record updated successfully!');
@@ -79,9 +84,11 @@ class ExpenseTypeController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $this->expenseTypeService->destroy($id);
+        $id = $request->route('id');
+        $user_id = $request->user()->id;
+        $this->expenseTypeService->destroy($id,$user_id);
         return redirect()->route('types.index');
     }
 }

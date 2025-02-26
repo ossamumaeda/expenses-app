@@ -21,6 +21,7 @@ class ExpenseController extends Controller
     public function index(Request $request)
     {
         $id = $request->route('id');
+        $user_id = $request->user()->id;
         $expenses = $this->expenseService->getWithJoins($user_id);
         return response()->json($expenses);
     }
@@ -72,9 +73,10 @@ class ExpenseController extends Controller
         }
     }
 
-    public function getByType()
+    public function getByType(Request $request)
     {
-        $expenses = $this->expenseService->getByType();
+        $user_id = $request->user()->id;
+        $expenses = $this->expenseService->getByType($user_id);
         return response()->json($expenses);
     }
 
@@ -116,6 +118,7 @@ class ExpenseController extends Controller
 
     public function createMany(Request $request)
     {
+        $user_id = $request->user()->id;
         $expenses = [];
         foreach ($request->expenses as $expenseData) {
             $expenseData['cost'] = (float) $expenseData['cost'];
@@ -136,7 +139,7 @@ class ExpenseController extends Controller
         ]);
 
         // Insert each expense into the database
-        $this->expenseService->createMany($request->expenses);
+        $this->expenseService->createMany($request->expenses,$user_id);
 
         return response()->json(['message' => 'Expenses added successfully!'], 201);
     }
@@ -144,6 +147,7 @@ class ExpenseController extends Controller
     public function update(Request $request)
     {
         try {
+            $user_id = $request->user()->id;
             $validated = $request->validate([
                 'id' => 'required|numeric',
                 'name' => 'string|max:255',
@@ -153,7 +157,7 @@ class ExpenseController extends Controller
                 'payment_method_id' => 'required|numeric',
             ]);
 
-            $this->expenseService->update($validated);
+            $this->expenseService->update($validated,$user_id);
 
             if ($request->expectsJson() === false) {
                 // Return the same view and reload the page with a success message

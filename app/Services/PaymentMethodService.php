@@ -8,29 +8,30 @@ use App\Models\PaymentMethod;
  */
 class PaymentMethodService {
     
-    public function getAll(){
-        $paymentMethod = PaymentMethod::all('id','name','color');
+    public function getAll($user_id){
+        $paymentMethod = PaymentMethod::where('user_id', $user_id)->get(['id', 'name', 'color']);
         return $paymentMethod;
     }
 
-    public function update($data)
+    public function update($data,$user_id)
     {
-        $paymentMethod = PaymentMethod::find($data['id']);
+        $paymentMethod = PaymentMethod::where('id', $data['id'])->where('user_id', $user_id)->first();
         $paymentMethod->update($data);
 
         return $paymentMethod;
     }
 
-    public function store($data){
-        PaymentMethod::create([
+    public function store($data,$user_id){
+        return PaymentMethod::create([
             'name' => $data['name'],
             'description' => $data['description'],
-            'color' => $data['color']
+            'color' => $data['color'],
+            'user_id' => $user_id
         ]);
     }
 
-    public function findById($id){
-        return PaymentMethod::find($id);
+    public function findById($id,$user_id){
+        return PaymentMethod::where('id', $id)->where('user_id', $user_id)->first();
     }
 
 }

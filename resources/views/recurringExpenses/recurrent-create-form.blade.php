@@ -1,6 +1,6 @@
 <div class="w-full items-center justify-center hidden" id="new-recurrent-form">
 
-    <form action="{{ route('recurrent-expenses.store') }}" method="POST" class="w-full">
+    <form id="recurrent-form" class="w-full">
         @csrf
         <div class="w-full flex flex-col sm:flex-row gap-x-5">
             <div class="sm:w-3/4 w-full mb-2">

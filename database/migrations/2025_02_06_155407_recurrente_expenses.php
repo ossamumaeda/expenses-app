@@ -16,6 +16,8 @@ return new class extends Migration
             $table->dateTime('start_date')->useCurrent();
             $table->float('cost',precision:3);  // Amount of the expense
             $table->text('description')->nullable();  // Description of the expense type
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
             $table->timestamps();
         });
     }

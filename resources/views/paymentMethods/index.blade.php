@@ -6,8 +6,8 @@
     <div class="w-fulll flex flex-col rounded-lg shadow-lg sm:p-4 p-2 gap-y-5" id="parent">
         <div class="w-full flex flex-row justify-between  p-1">
             <div class="w-auto">
-                <h2 class="text-2xl sm:text-3xl font-medium text-gray-800">Expense types</h1>
-                    <p class="mt-2 text-xs text-gray-500">Categorize expenses types</p>
+                <h2 class="text-2xl sm:text-3xl font-medium text-gray-800">Payment Methods</h1>
+                    <p class="mt-2 text-xs text-gray-500">Categorize payment methods</p>
             </div>
         </div>
 

@@ -225,8 +225,60 @@ $(document).ready(function() {
         });
     });
 
+    $("#recurrent-form").on('submit',function(){
+        event.preventDefault(); // Prevent default form submission
+        const token = localStorage.getItem('auth_token');
+        let formData = $(this).serialize();
+        // Get updated values
+
+        // Send AJAX request to update the database (if needed)
+        $.ajax({
+            url: "/api/recurrent-expenses",  // Adjust your route
+            type: "POST",
+            data: formData,
+            headers: { 
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Authorization': `Bearer ${token}`
+            }, // Laravel CSRF token
+            success: function(response) {
+                appendRow(response)
+            }
+        });
+    });
+
 });
 
+function appendRow(row){
+    $("#recurrent-body").append(`
+       <tr class="odd:bg-white" data-id="${row.id}">
+            <td class="p-3 text-base text-gray-900">
+                <span class="view-mode text-xs">${row.name}</span>
+                <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm"
+                    value="${row.name}">
+            </td>
+            <td class="p-3 text-sm text-gray-700">
+                <span class="view-mode text-xs">${row.description}</span>
+                <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm"
+                    value="${row.description}">
+            </td>
+            <!-- Editable Cost Field -->
+            <td class="p-3 text-sm text-gray-700">
+                <span class="view-mode text-xs">${row.cost}</span>
+                <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm"
+                    value="${row.cost}">
+            </td>
+
+            <!-- Edit / Save Button -->
+            <td class="flex items-center px-3 py-4 gap-2 ">
+                <button class="edit-btn font-medium text-blue-600 hover:underline">Edit</button>
+                <button
+                    class="save-btn font-medium text-green-600 hover:underline hidden" id="save-recurrent">Save</button>
+                <button
+                    class="cancel-btn font-medium text-red-500 hover:underline hidden">Cancel</button>
+            </td>
+        </tr>
+    `);
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     const myModal = document.getElementById("recurrentModal");

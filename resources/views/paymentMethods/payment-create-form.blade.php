@@ -1,5 +1,5 @@
 <div class="w-full items-center justify-center hidden p-4" id="new-recurrent-form">
-    <form action="{{ route('payment-method.store') }}" method="POST" class="w-full">
+    <form id="payment-form" class="w-full">
         @csrf
         <div class="w-full flex flex-col sm:flex-row gap-x-5 mb-4">
             <div class="sm:w-[10%] w-full">

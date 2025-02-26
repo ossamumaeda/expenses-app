@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Auth;
 use App\Services\PaymentMethodService;
 
 
@@ -17,7 +17,8 @@ class PaymentMethodController extends Controller
 
     public function index()
     {
-        $paymentMethods = $this->paymentMethod->getAll();
+        $user_id = Auth::user()->id;
+        $paymentMethods = $this->paymentMethod->getAll($user_id);
         return view('paymentMethods.index',compact('paymentMethods'));
     }
 

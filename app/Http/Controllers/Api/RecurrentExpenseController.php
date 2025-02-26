@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
@@ -26,6 +25,7 @@ class RecurrentExpenseController extends Controller
         ]);
 
         try{
+            $user_id = $user_id = $request->user()->id; 
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'cost' => 'required|numeric',
@@ -33,17 +33,14 @@ class RecurrentExpenseController extends Controller
                 'frequency' => 'nullable|string',
                 'description' => 'nullable|string|max:255',
             ]);
-            $this->recurrentExpenseService->createRecurrentExpense($validated);
+            $recurrent = $this->recurrentExpenseService->createRecurrentExpense($validated,$user_id);
             if ($request->expectsJson() === false) {
                 // Return the same view and reload the page with a success message
                 return redirect()->back()->with('message', 'Record created successfully!');
             }
         
             // If the request comes from an API (expects a JSON response)
-            return response()->json([
-                'message' => 'Record created successfully!',
-                'data' => Expense::latest()->first() // Optionally return the newly created data
-            ], 201);
+            return response()->json($recurrent, 201);
         }
         catch (ValidationException $e) {
             return response()->json([
@@ -56,13 +53,14 @@ class RecurrentExpenseController extends Controller
     public function update(Request $request)
     {
         try{
+            $user_id = $request->user()->id;
             $validated = $request->validate([
                 'id' => 'numeric',
                 'name' => 'string|max:255',
                 'cost' => 'numeric',
                 'description' => 'string|max:255'
             ]);
-            $this->recurrentExpenseService->update($validated);
+            $this->recurrentExpenseService->update($validated,$user_id);
             if ($request->expectsJson() === false) {
                 // Return the same view and reload the page with a success message
                 return redirect()->back()->with('message', 'Record updated successfully!');
@@ -84,6 +82,7 @@ class RecurrentExpenseController extends Controller
     
     public function createMany(Request $request)
     {
+        $user_id = $request->user()->id; 
         $expenses = [];
         foreach ($request->expenses as $expenseData) {
             $expenseData['cost'] = (float) $expenseData['cost'];
@@ -105,7 +104,7 @@ class RecurrentExpenseController extends Controller
             'frequency' => 'nullable|string',
         ]);
 
-        $this->recurrentExpenseService->storeMany($request->expenses);
+        $this->recurrentExpenseService->storeMany($request->expenses,$user_id);
 
         return response()->json(['message' => 'Recurrent expenses added successfully!'], 201);
     }

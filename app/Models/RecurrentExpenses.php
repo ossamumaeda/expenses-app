@@ -10,7 +10,7 @@ class RecurrentExpenses extends Model
     use HasFactory;
 
     protected $table = 'recurrent_expenses';
-    protected $fillable = ['name', 'description','color', 'cost', 'frequency','start_date'];
+    protected $fillable = ['name', 'description','color', 'cost', 'frequency','start_date','user_id'];
     public  $timestamps = true;
 
 }

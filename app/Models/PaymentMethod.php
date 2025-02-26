@@ -10,7 +10,7 @@ class PaymentMethod extends Model
     use HasFactory;
 
     protected $table = 'payment_methods';
-    protected $fillable = ['name', 'description','color'];
+    protected $fillable = ['name', 'description','color','user_id'];
     public  $timestamps = true;
     public function expenses()
     {

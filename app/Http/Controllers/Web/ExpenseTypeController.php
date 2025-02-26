@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
-
 use App\Services\ExpenseTypeService;
-
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseTypeController extends Controller
 {
@@ -17,7 +16,8 @@ class ExpenseTypeController extends Controller
 
     public function index()
     {
-        $expenseTypes = $this->expenseTypeService->getAll();
+        $user_id = Auth::user()->id;
+        $expenseTypes = $this->expenseTypeService->getAll($user_id);
         return view('expenseTypes.index',compact('expenseTypes'));
     }
 

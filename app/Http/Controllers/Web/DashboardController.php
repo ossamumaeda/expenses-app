@@ -38,9 +38,9 @@ class DashboardController extends Controller
         $expensesTotalCost = $this->expenseService->getCostSum($user_id);
 
         // Get all the types of expenses
-        $expenseTypes = $this->expenseTypeService->getAll();
+        $expenseTypes = $this->expenseTypeService->getAll($user_id);
         // Get all the payment methods
-        $paymentMethods = $this->paymentMethodService->getAll();
+        $paymentMethods = $this->paymentMethodService->getAll($user_id);
 
         $todayMonth = date("F");
 

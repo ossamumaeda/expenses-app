@@ -6,7 +6,7 @@
             <th class="w-20 p-3 text-xs font-semibold tracking-wide text-left">Action</th>
         </tr>
     </thead>
-    <tbody class="divide-y divide-gray-100">
+    <tbody class="divide-y divide-gray-100" id="table-body">
         @foreach ($paymentMethods as $type)
             <tr class="odd:bg-white" data-id="{{ $type->id }}">
                 <!-- Editable Name Field -->
