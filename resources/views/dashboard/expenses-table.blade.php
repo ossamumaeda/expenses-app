@@ -2,12 +2,12 @@
     <table class="w-full" id="table-expenses-dashboard">
         <thead class="bg-gray-50 border-b-2 border-gray-200">
             <tr>
-                <th class="w-40 p-3 text-sm font-semibold tracking-wide text-left">Date</th>
-                <th class="w-60 p-3 text-sm font-semibold tracking-wide text-left">Name</th>
+                <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Date</th>
+                <th class="w-40 p-3 text-sm font-semibold tracking-wide text-left">Name</th>
                 <th class="w-60 p-3 text-sm font-semibold tracking-wide text-left">Category</th>
                 <th class="w-60 p-3 text-sm font-semibold tracking-wide text-left">Payment</th>
-                <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Installments</th>
-                <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Cost</th>
+                <th class="w-10 p-3 text-sm font-semibold tracking-wide text-left">Installments</th>
+                <th class="w-10 p-3 text-sm font-semibold tracking-wide text-left">Cost</th>
                 <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Action</th>
             </tr>
         </thead>

@@ -74,8 +74,21 @@ $(document).ready(function() {
         row.find(".cancel-btn").removeClass("hidden");
     });
 
-    $(".save_expense").click(function() {
+    $(".cancel-btn").click(function() {
+        var row = $(this).closest("tr");
 
+        // Hide "view-mode" spans and show input fields
+        row.find(".view-mode").removeClass("hidden");
+        row.find(".edit-mode").addClass("hidden");
+
+        // Show "Save" button, hide "Edit" button
+        row.find(".edit-btn").removeClass("hidden");
+        row.find(".save-btn").addClass("hidden");
+        row.find(".cancel-btn").addClass("hidden");
+    });
+
+    $(".save-btn").click(function() {
+        const token = localStorage.getItem('auth_token');
         var row = $(this).closest("tr");
         var expenseId = row.data("id");
 
@@ -104,7 +117,7 @@ $(document).ready(function() {
             url: "/api/expenses-update",  // Adjust your route
             type: "POST",
             data: updatedData,
-            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }, // Laravel CSRF token
+            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' , 'Authorization': `Bearer ${token}`}, // Laravel CSRF token
             success: function(response) {
                 // Update UI with new values
                 row.find("#view-name-"+expenseId).text(updatedData.name);
@@ -298,7 +311,7 @@ $(document).ready(function() {
 });
 
 function appendRow(row,expenseTypes,paymentMethods){
-    $("#expense-body").append(`
+    let table_row = `
                 <tr class="odd:bg-white even:bg-slate-200" data-id="${row.id}">
                     <td class="p-3 text-sm text-gray-700">${row.due_date}</td>
 
@@ -323,7 +336,7 @@ function appendRow(row,expenseTypes,paymentMethods){
                         <select
                             class="trigger-color edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
                             style="background-color:${row.expense_type.color};"
-                            id="expenseType-${row.id}" >`);
+                            id="expenseType-${row.id}" >`;
     let expenseTypeSelect = '';
     expenseTypes.forEach((type) =>{
         let selected = row.expense_type.id == type.id ? 'selected' : '';
@@ -335,8 +348,8 @@ function appendRow(row,expenseTypes,paymentMethods){
         </option>
         `
     })
-    $("#expense-type-table").append(expenseTypeSelect);
-    $("#expense-type-table").append(`
+    table_row += expenseTypeSelect;
+    table_row +=`
                         </select>
                     </td>
 
@@ -354,7 +367,7 @@ function appendRow(row,expenseTypes,paymentMethods){
                         <select
                             class="trigger-color edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
                             style="background-color: ${row.payment_method.color};"
-                            id="paymentMethod-${row.id}" >`);
+                            id="paymentMethod-${row.id}" >`;
     
     let paymentMethodsSelect = '';
     paymentMethods.forEach((payment) =>{
@@ -367,8 +380,8 @@ function appendRow(row,expenseTypes,paymentMethods){
         </option>
         `
     });
-    $("#expense-type-table").append(paymentMethodsSelect);
-    $("#expense-type-table").append(`
+    table_row += paymentMethodsSelect;
+    table_row +=`
                 </select>
                     </td>
 
@@ -383,9 +396,9 @@ function appendRow(row,expenseTypes,paymentMethods){
                     <!-- Editable Cost Field -->
                     <td class="p-3 text-sm text-gray-700">
                         <span class="view-mode"
-                            id="view-cost-${row.id}">{{ $expense->cost }}</span>
+                            id="view-cost-${row.id}">${row.cost}</span>
                         <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm"
-                            value="{{ $expense->cost }}" id="cost-${row.id}">
+                            value="${row.cost}" id="cost-${row.id}">
                     </td>
 
                     <!-- Edit / Save Button -->
@@ -397,7 +410,8 @@ function appendRow(row,expenseTypes,paymentMethods){
                             class="cancel-btn font-medium text-red-500 hover:underline hidden">Cancel</button>
                     </td>
                 </tr>
-    `);
+    `;
+    $("#expense-body").append(table_row);
 }
 
 function myFunction() {
