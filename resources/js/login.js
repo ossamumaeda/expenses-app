@@ -16,10 +16,6 @@ $(document).ready(function() {
             success: function(response) {
                 // Store the token in localStorage
                 localStorage.setItem('auth_token', response.token);
-    
-                console.log("Login successful, token stored!");
-    
-                // After storing the token, the form will be submitted automatically as usual
             },
             error: function(response) {
                 console.log("Login failed", response);
@@ -48,6 +44,24 @@ $(document).ready(function() {
             }
         });
     })
+
+    $(".logout-btn").click(function(e){
+        e.preventDefault()
+        $("#logout-btn").trigger("submit"); 
+        console.log("Logou")
+        const token = localStorage.getItem('auth_token');
+        $.ajax({
+            url: '/destroy-token', // API route
+            type: 'POST',
+            headers: { "Content-Type": "application/json","Authorization": `Bearer ${token}` },
+            processData: false, // Prevent jQuery from processing the data
+            contentType: false, // Prevent jQuery from setting contentType
+            success: function (response) {
+                window.location.href = "/login"; // Redirect user if needed
+            }
+        });
+    })
+
     
 });
 

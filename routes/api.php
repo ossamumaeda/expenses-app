@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // Is not redirecting
         return response()->json($request->user(), 201);
     });
-    
+
     Route::post('/types', [ExpenseTypeController::class, 'store'])->name('types.store');
     Route::get('/types', [ExpenseTypeController::class, 'index']);
     Route::get('/types/{id}', [ExpenseTypeController::class, 'getById']);
@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/recurrent-expenses-update', [RecurrentExpenseController::class, 'update'])->name('recurrent-expenses.update');
 
     Route::post('/recurrent-create', [RecurrentExpenseController::class, 'createMany'])->name('recurrent-expenses.store-many');
+    Route::post('/destroy-token', [TokenController::class, 'destroyToken'])->name('create-token.destroyToken');
 });
 
 Route::post('/create-token', [TokenController::class, 'createToken'])->name('create-token.createToken');
