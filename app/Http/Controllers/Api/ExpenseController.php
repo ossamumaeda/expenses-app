@@ -51,22 +51,13 @@ class ExpenseController extends Controller
                 'installments' => 'nullable|bool',
                 'due_date' => 'nullable|date|date_format:Y-m-d H:i:s',
                 'expense_type_id' => 'required|exists:expense_types,id',
-                'payment_method_id' => 'exists:payment_methods,id',
+                'payment_method_id' => 'exists:payment_methods,id'
             ]);
 
+            $validated['user_id'] = $request->user()->id; // Add user_id here
             $expense = $this->expenseService->createExpense($validated);
-            if ($request->expectsJson() === false) {
-                // Return the same view and reload the page with a success message
-                return redirect()->back()->with('message', 'Record created successfully!');
-            }
+            return response()->json($expense, 201);
 
-            // If the request comes from an API (expects a JSON response)
-            return response()->json(
-                [
-                    'message' => 'Record created successfully!'
-                ],
-                201,
-            );
         } catch (ValidationException $e) {
             return response()->json(
                 [
@@ -147,35 +138,41 @@ class ExpenseController extends Controller
         return response()->json(['message' => 'Expenses added successfully!'], 201);
     }
 
-    public function update(Request $request){
-        try{
+    public function update(Request $request)
+    {
+        try {
             $validated = $request->validate([
                 'id' => 'required|numeric',
                 'name' => 'string|max:255',
                 'cost' => 'numeric',
                 'description' => 'string|max:255',
                 'expense_type_id' => 'required|numeric',
-                'payment_method_id' => 'required|numeric'
+                'payment_method_id' => 'required|numeric',
             ]);
 
             $this->expenseService->update($validated);
-            
+
             if ($request->expectsJson() === false) {
                 // Return the same view and reload the page with a success message
                 return redirect()->back()->with('message', 'Record created successfully!');
             }
-        
+
             // If the request comes from an API (expects a JSON response)
-            return response()->json([
-                'message' => 'Record created successfully!',
-                'data' => Expense::latest()->first() // Optionally return the newly created data
-            ], 201);
-        }
-        catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
-            ], 422);
+            return response()->json(
+                [
+                    'message' => 'Record created successfully!',
+                    'data' => Expense::latest()->first(), // Optionally return the newly created data
+                ],
+                201,
+            );
+        } catch (ValidationException $e) {
+            return response()->json(
+                [
+                    'message' => 'Validation failed',
+                    'errors' => $e->errors(),
+                ],
+                422,
+            );
         }
     }
 }

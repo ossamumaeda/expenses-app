@@ -1,7 +1,7 @@
 <div class="rounded-lg shadow overflow-hidden sm:p-4 p-2 hidden" id="new-expense-form">
     <div class="w-full flex items-center justify-center">
         <div class="mx-auto w-full">
-            <form action="{{ route('expenses.store') }}" method="POST">
+            <form id="new-expense" data-types="{{json_encode($expenseTypes)}}" data-payment="{{json_encode($paymentMethods)}}">
                 @csrf
                 <div class="mb-5 flex flex-col sm:flex-row gap-x-5">
                     <div class="sm:w-3/4 w-full ">

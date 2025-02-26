@@ -174,7 +174,7 @@ $(document).ready(function() {
                 `;
                 response.forEach(line => {
                     table = table.concat(`
-                        <tr class="odd:bg-white" data-id="{{ $expense->id }}">
+                        <tr class="odd:bg-white" data-id="${row.id}">
                             <td class="p-3 text-base text-gray-900">
                                 <span class="view-mode"> ${line['name']} </span>
                             </td>
@@ -233,7 +233,6 @@ $(document).ready(function() {
         });
     });
 
-
     // Filters
     $('#expense-filter').on('change',function() {
         filterCategory();
@@ -262,8 +261,132 @@ $(document).ready(function() {
         $('#expense-filter').val('-1').change()
     });
 
+    $("#new-expense").on('submit',function(){
+        event.preventDefault(); // Prevent default form submission
+        const token = localStorage.getItem('auth_token');
+        let formData = $(this).serialize();
+        let expenseTypes = $("#new-expense").data("types");
+        let paymentMethods = $("#new-expense").data("payment");
+        // Send AJAX request to update the database (if needed)
+        $.ajax({
+            url: "/api/expenses",  // Adjust your route
+            type: "POST",
+            data: formData,
+            headers: { 
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Authorization': `Bearer ${token}`
+            }, // Laravel CSRF token
+            success: function(response) {
+                appendRow(response,expenseTypes,paymentMethods)
+            }
+        });
+    });
+    
+
 });
 
+function appendRow(row,expenseTypes,paymentMethods){
+    $("#expense-body").append(`
+                <tr class="odd:bg-white even:bg-slate-200" data-id="${row.id}">
+                    <td class="p-3 text-sm text-gray-700">${row.due_date}</td>
+
+                    <!-- Editable Name Field -->
+                    <td class="p-3 text-sm text-gray-700">
+                        <span class="view-mode"
+                            id="view-name-${row.id}">${row.name}</span>
+                        <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm"
+                            value="${row.name}" id="name-${row.id}">
+                    </td>
+
+                    <!-- Editable Category Field -->
+                    <td class="p-3 text-sm text-gray-700" id="id-expense">
+                        <span class="view-mode" id="expense-type">
+                            <span
+                                class="p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 break-words w-full inline-block text-center"
+                                style="background-color:${row.expense_type.color}"
+                                id="view-type-${row.id}">
+                                ${row.expense_type.name}
+                            </span>
+                        </span>
+                        <select
+                            class="trigger-color edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
+                            style="background-color:${row.expense_type.color};"
+                            id="expenseType-${row.id}" >`);
+    let expenseTypeSelect = '';
+    expenseTypes.forEach((type) =>{
+        let selected = row.expense_type.id == type.id ? 'selected' : '';
+        expenseTypeSelect = expenseTypeSelect + `
+        <option value="${type.id}" class="text-gray-700"
+            style="background-color: ${type.color};font-weight: bold;"
+            ${selected}>
+            ${type.name}
+        </option>
+        `
+    })
+    $("#expense-type-table").append(expenseTypeSelect);
+    $("#expense-type-table").append(`
+                        </select>
+                    </td>
+
+                    <!-- Editable Payment Field -->
+                    <td class="p-3 text-sm text-gray-700" id="id-payment">
+                        <span class="view-mode block w-full" id="payment-type">
+                            <span
+                                class="p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 break-words w-full inline-block text-center"
+                                style="background-color:${row.payment_method.color}"
+                                id="view-payment-${row.id}">
+                                ${row.payment_method.name}
+                            </span>
+                        </span>
+
+                        <select
+                            class="trigger-color edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
+                            style="background-color: ${row.payment_method.color};"
+                            id="paymentMethod-${row.id}" >`);
+    
+    let paymentMethodsSelect = '';
+    paymentMethods.forEach((payment) =>{
+        let selected = row.payment_method.id == payment.id ? 'selected' : '';
+        expenseTypeSelect = expenseTypeSelect + `
+        <option value="${payment.id}" class="text-gray-700"
+            style="background-color: ${payment.color};font-weight: bold;"
+            ${selected}>
+            ${payment.name}
+        </option>
+        `
+    });
+    $("#expense-type-table").append(paymentMethodsSelect);
+    $("#expense-type-table").append(`
+                </select>
+                    </td>
+
+                    <!-- Editable Installments Field -->
+                    <td class="p-3 text-sm text-gray-700">
+                        <span class="view-mode"
+                            id="view-installment-${row.id}">${row.installments}</span>
+                        <input type="number" class="edit-mode hidden w-full border px-2 py-1 text-sm"
+                            value="${row.installments}" id="stallment-${row.id}">
+                    </td>
+
+                    <!-- Editable Cost Field -->
+                    <td class="p-3 text-sm text-gray-700">
+                        <span class="view-mode"
+                            id="view-cost-${row.id}">{{ $expense->cost }}</span>
+                        <input type="text" class="edit-mode hidden w-full border px-2 py-1 text-sm"
+                            value="{{ $expense->cost }}" id="cost-${row.id}">
+                    </td>
+
+                    <!-- Edit / Save Button -->
+                    <td class="flex items-center px-3 py-4 gap-2">
+                        <button class="edit-btn font-medium text-blue-600 hover:underline">Edit</button>
+                        <button
+                            class="save-btn font-medium text-green-600 hover:underline hidden save_expense">Save</button>
+                        <button
+                            class="cancel-btn font-medium text-red-500 hover:underline hidden">Cancel</button>
+                    </td>
+                </tr>
+    `);
+}
 
 function myFunction() {
     const trs = document.querySelectorAll('#table-expenses-dashboard tr:not(.header)')

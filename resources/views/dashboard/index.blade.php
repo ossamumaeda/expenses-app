@@ -27,7 +27,6 @@
 
             @include('dashboard.expenses-cards', ['allExpenses' => $allExpenses])
         </div>
-
     </div>
 
     @include('dashboard.modal-csv')

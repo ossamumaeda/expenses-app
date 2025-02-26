@@ -66,11 +66,13 @@ class ExpenseService {
         return $expenses;
     }
 
-    public function createExpense($data){
-        $data['user_id'] = Auth::user()->id;
+    public function createExpense($data)
+    {
         $expense = Expense::create($data);
-        return $expense;
+    
+        return $expense->load(['expenseType', 'paymentMethod']);
     }
+    
 
     public function createMany($data){
         foreach ($data as $expenseData) {

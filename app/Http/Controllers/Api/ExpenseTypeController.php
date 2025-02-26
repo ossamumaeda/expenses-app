@@ -42,7 +42,7 @@ class ExpenseTypeController extends Controller
             'description' => 'string|max:255',
             'color' => 'string'
         ]);
-
+        $validated['user_id'] = $request->user()->id;
         $expenseType = $this->expenseTypeService->store($validated);
         return response()->json($expenseType, 201);
     }

@@ -35,8 +35,7 @@
                 </div>
             </div>
             @include('expenseTypes.table',['expenseTypes' => $expenseTypes])
-        </div>
-
+        </div>    
     </div>
 </div>
 </x-layout.app>

@@ -11,7 +11,7 @@
                 <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Action</th>
             </tr>
         </thead>
-        <tbody class="divide-y divide-gray-100">
+        <tbody class="divide-y divide-gray-100" id="expense-body">
             @foreach ($allExpenses as $expense)
                 <tr class="odd:bg-white even:bg-slate-200" data-id="{{ $expense->id }}">
                     <td class="p-3 text-sm text-gray-700">{{ $expense->due_date }}</td>
