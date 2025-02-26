@@ -18,15 +18,18 @@ class ExpenseController extends Controller
         $this->expenseService = $expenseService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $expenses = $this->expenseService->getWithJoins();
+        $id = $request->route('id');
+        $expenses = $this->expenseService->getWithJoins($user_id);
         return response()->json($expenses);
     }
 
-    public function getById($id)
+    public function getById(Request $request)
     {
-        $expense = $this->expenseService->getById($id);
+        $id = $request->route('id');
+        $user_id = $request->user()->id; 
+        $expense = $this->expenseService->getById($id,$user_id);
 
         if (!$expense) {
             return response()->json(['message' => 'Expense type not found'], 404);
@@ -54,8 +57,8 @@ class ExpenseController extends Controller
                 'payment_method_id' => 'exists:payment_methods,id'
             ]);
 
-            $validated['user_id'] = $request->user()->id; // Add user_id here
-            $expense = $this->expenseService->createExpense($validated);
+            $user_id = $request->user()->id; // Add user_id here
+            $expense = $this->expenseService->createExpense($validated,$user_id);
             return response()->json($expense, 201);
 
         } catch (ValidationException $e) {

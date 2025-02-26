@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ExpenseService;
 use App\Services\ExpenseTypeService;
 use App\Services\PaymentMethodService;
-
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -24,17 +24,18 @@ class DashboardController extends Controller
     public function index()
     {
         // Retrieve data to populate the graph
-        $expensesByType = $this->expenseService->getByType();
+        $user_id = Auth::user()->id;
+        $expensesByType = $this->expenseService->getByType($user_id);
         $chartLabels = $expensesByType->pluck('name')->toArray(); // Labels
         $chartData = $expensesByType->pluck('cost')->toArray(); // Values
         $chartColor = $expensesByType->pluck('color')->toArray(); // Values
 
         // List of all the expenses
-        $allExpenses = $this->expenseService->getAll();
+        $allExpenses = $this->expenseService->getAll($user_id);
         $countExpenses = count($allExpenses); 
 
         // Sum of the expenses
-        $expensesTotalCost = $this->expenseService->getCostSum();
+        $expensesTotalCost = $this->expenseService->getCostSum($user_id);
 
         // Get all the types of expenses
         $expenseTypes = $this->expenseTypeService->getAll();

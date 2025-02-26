@@ -239,6 +239,18 @@ $(document).ready(function() {
         let select = $('#expense-filter'); 
         changeElementBackgroundColor(select);
     });
+    
+    $('#expense_type_id').on('change',function() {
+        filterCategory();
+        let select = $('#expense_type_id'); 
+        changeElementBackgroundColor(select);
+    });
+
+    $('#payment_method_id').on('change',function() {
+        filterCategory();
+        let select = $('#payment_method_id'); 
+        changeElementBackgroundColor(select);
+    });
 
     $('#payment-filter').on('change',function() {
         filterCategory();

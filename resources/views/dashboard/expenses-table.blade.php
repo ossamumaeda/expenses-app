@@ -35,7 +35,7 @@
                             </span>
                         </span>
                         <select
-                            class="trigger-color edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
+                            class="w-full trigger-color edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
                             style="background-color: {{ $expense->expenseType->color }};"
                             id="expenseType-{{ $expense->id }}" >
                             @foreach ($expenseTypes as $type)
@@ -60,7 +60,7 @@
                         </span>
 
                         <select
-                            class="trigger-color edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
+                            class="w-full trigger-color edit-mode hidden p-1.5 text-xs font-medium uppercase tracking-wider rounded-lg bg-opacity-50 focus:outline-none border-0 shadow-md"
                             style="background-color: {{ $expense->paymentMethod->color }};"
                             id="paymentMethod-{{ $expense->id }}" >
                             @foreach ($paymentMethods as $method)
