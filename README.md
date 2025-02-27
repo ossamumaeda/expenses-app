@@ -1,3 +1,32 @@
-Docker:
-    - Remember to connect to the same network as the database if it runs on containers
-    - Remember to composer install, and npm instal / build
+# Expenses Tracker
+
+Expenses Tracker is an Laravel app designed to track your monthly expenses and was built for study purpouses.
+The is based on dashboard views, allowing you to visualize your expenses depending according to custom categories.
+
+![Tux, the Linux mascot](/assets/images/example.png)
+
+# Instalation
+
+- Required resources
+    - Docker
+
+## Commands 
+sudo docker-compose up --build
+
+sudo docker exec -it laravel-app bash
+
+npm install
+
+composer install
+
+# Usage
+
+Inside the docker container, initialize vite
+
+Enter the container with:
+
+- sudo docker exec -it laravel-app bash
+
+Run vite:
+
+- npm run dev
